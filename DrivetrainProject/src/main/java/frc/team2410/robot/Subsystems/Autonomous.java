@@ -36,16 +36,7 @@ public class Autonomous {
 				autoDone = true;
 				break;
 			case 1:
-				cargoship(true);
-				break;
-			case 2:
-				cargoship(false);
-				break;
-			case 3:
-				rocketFront(true);
-				break;
-			case 4:
-				rocketFront(false);
+				driveForward(10);
 				break;
 			default:
 				autoDone = true;
@@ -55,73 +46,18 @@ public class Autonomous {
 		if(Robot.oi.getAbortAuto()) autoDone = true;
 	}
 
-	private void cargoship(boolean left) {
-		final double STRAFE_SPEED = 0.1;
-
+	public void driveForward(double distance) {
 		switch(state) {
 			case 0:
-				timer.reset();
-				timer.start();
-				Robot.drivetrain.desiredHeading = 0;
+				Robot.pathFinder.setPath(distance);
 				state++;
-				break;
 			case 1:
-				// Drive to cargoship
-				Robot.drivetrain.crabDrive(left ? -STRAFE_SPEED : STRAFE_SPEED, 0.8, 0, 1, true);
-				if(timer.get() > 2.125) {
-					Robot.drivetrain.brake();
-					timer.reset();
-					timer.start();
-					state++;
-				}
+				Robot.drivetrain.tankForward(Robot.pathFinder.getCurrentSpeed() / MAX_SPEED);
+				if(Robot.pathFinder.getPathDone()) state++;
 				break;
 			case 2:
-				// Raise elevator and extend wrist
-				if(timer.get() > 0.1) {
-					timer.reset();
-					timer.start();
-					autoDone = true;
-				}
-				break;
-		}
-	}
-
-	private void rocketFront(boolean left) {
-		final double X_SPEED = 0.80;
-
-		switch(state) {
-			case 0:
-				timer.reset();
-				timer.start();
-				state++;
-				break;
-			case 1:
-				// Drive off hab
-				Robot.drivetrain.crabDrive(0, 0.85, 0, 1, true);
-				if(timer.get() > 1.6) {
-					Robot.drivetrain.brake();
-					Robot.drivetrain.desiredHeading = left ? ROCKET_LEFT_LEFT : ROCKET_RIGHT_RIGHT;
-					timer.reset();
-					timer.start();
-					state++;
-				}
-				break;
-			case 2:
-				// Drive to rocket
-				Robot.drivetrain.crabDrive(left ? -X_SPEED : X_SPEED, 0.65, 0, 1, true);
-				if(timer.get() > 2.125) {
-					Robot.drivetrain.brake();
-					timer.reset();
-					timer.start();
-					state++;
-				}
-				break;
-			case 3:
-				// Raise elevator and extend wrist
-				if(timer.get() > 0.1) {
-					timer.reset();
-					autoDone = true;
-				}
+				Robot.drivetrain.brake();
+				autoDone = true;
 				break;
 		}
 	}

@@ -16,12 +16,11 @@ public class Robot extends TimedRobot
 	public static SemiAuto semiAuto;
 	public static LED led;
 	public static Autonomous autonomous;
+	public static PathFinder pathFinder;
+
 	enum AutoStations {
 		TELEOP,
-		CARGOSHIP_LEFT,
-		CARGOSHIP_RIGHT,
-		ROCKET_LEFT_FRONT,
-		ROCKET_RIGHT_FRONT
+		MOTION_PROFILING,
 	}
 	SendableChooser<AutoStations> autoPicker;
 	private float smp;
@@ -45,12 +44,11 @@ public class Robot extends TimedRobot
 		semiAuto = new SemiAuto();
 		led = new LED();
 		autonomous = new Autonomous();
+		pathFinder = new PathFinder();
+
 		autoPicker = new SendableChooser<>();
 		autoPicker.addOption("Teleop", AutoStations.TELEOP);
-		autoPicker.addOption("Left Cargoship Auto", AutoStations.CARGOSHIP_LEFT);
-		autoPicker.addOption("Right Cargoship Auto", AutoStations.CARGOSHIP_RIGHT);
-		autoPicker.addOption("Rocket Left Auto", AutoStations.ROCKET_LEFT_FRONT);
-		autoPicker.addOption("Rocket Right Auto", AutoStations.ROCKET_RIGHT_FRONT);
+		autoPicker.addOption("Motin Profiling", AutoStations.MOTION_PROFILING);
 		SmartDashboard.putData("Auto Picker", autoPicker);
 		led.setColor(0, 0, 255);
 		

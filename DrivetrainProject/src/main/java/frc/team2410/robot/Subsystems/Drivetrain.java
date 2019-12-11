@@ -23,7 +23,6 @@ public class Drivetrain {
 		this.desiredHeading = Robot.gyro.getHeading();
 		this.driveEnc = new Encoder(CIMCODER_A, CIMCODER_B);
 		this.driveEnc.setDistancePerPulse(DRIVE_DIST_PER_PULSE);
-		
 		this.gyroPID = new PIDController(GYRO_P, GYRO_I, GYRO_D, Robot.gyro, new NumericalPIDOutput(), 0.002);
 
 		
@@ -146,14 +145,21 @@ public class Drivetrain {
 		}
 	}
 	
-	public void tankDrive(double ystick, boolean left) {
+	public void tankDrive(double speed, boolean left) {
 		if(left) {
-			fl.drive(ystick, 0);
-			bl.drive(ystick, 0);
+			fl.drive(speed, 0);
+			bl.drive(speed, 0);
 		} else {
-			fr.drive(ystick, 0);
-			br.drive(ystick, 0);
+			fr.drive(speed, 0);
+			br.drive(speed, 0);
 		}
+	}
+
+	public void tankForward(double speed) {
+		fl.drive(speed, 0);
+		fr.drive(speed, 0);
+		br.drive(speed, 0);
+		bl.drive(speed, 0);
 	}
 	
 	public double wrap(double num, double max, double min) {

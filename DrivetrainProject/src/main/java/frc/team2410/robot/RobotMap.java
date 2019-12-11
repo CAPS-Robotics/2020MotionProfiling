@@ -1,7 +1,5 @@
 package frc.team2410.robot;
 
-import jdk.jfr.Unsigned;
-
 public class RobotMap
 {
 	public static final boolean COMPETITION_BOT = true;
@@ -13,6 +11,12 @@ public class RobotMap
 	public static final double GYRO_P = .03;
 	public static final double GYRO_I = 0;
 	public static final double GYRO_D = 0;
+
+	//Robot Properties
+	public static final double MAX_SPEED = 11;
+	public static final double MAX_ACCELERATION = 5.225;
+	public static final double TIME_TO_TOP_SPEED = MAX_SPEED / MAX_ACCELERATION;
+	public static final double DISTANCE_TO_MAX_SPEED = TIME_TO_TOP_SPEED * MAX_SPEED;
 
 	//CAN
 	public static final int BACK_LEFT_STEER = 1;

@@ -22,7 +22,6 @@ public class SemiAuto {
 	public double pBackPos;
 	public double targetAngle;
 	
-	
 	public SemiAuto() {
 		
 		t = new Timer();
