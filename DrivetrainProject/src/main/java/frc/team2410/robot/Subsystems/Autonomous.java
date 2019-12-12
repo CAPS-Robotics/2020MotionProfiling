@@ -36,7 +36,7 @@ public class Autonomous {
 				autoDone = true;
 				break;
 			case 1:
-				driveForward(10);
+				driveForward(5);
 				break;
 			default:
 				autoDone = true;

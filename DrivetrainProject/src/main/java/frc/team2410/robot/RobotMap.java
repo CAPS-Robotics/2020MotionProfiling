@@ -42,8 +42,8 @@ public class RobotMap
 	public static final int FR_STEER_ENCODER = 3;
 	
 	//DIO
-	public static final int CIMCODER_A = 0;
-	public static final int CIMCODER_B = 1;
+	public static final int CIMCODER_A = 2;
+	public static final int CIMCODER_B = 3;
 
 	//Offsets
 	public static final float BR_OFFSET = 2.4316403760000003f;

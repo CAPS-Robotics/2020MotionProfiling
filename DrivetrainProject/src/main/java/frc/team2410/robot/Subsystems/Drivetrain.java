@@ -172,6 +172,7 @@ public class Drivetrain {
 	public double getTravel() {
 		return driveEnc.getDistance();
 	}
+	public double get() { return driveEnc.get(); }
 	
 	public void setGyroPID(double p, double i, double d) {
 		gyroPID.setPID(p, i, d);

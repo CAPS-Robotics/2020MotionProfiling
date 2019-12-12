@@ -1,11 +1,11 @@
 package frc.team2410.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort;
-import net.bak3dnet.robotics.led.*;
-import net.bak3dnet.robotics.led.modules.*;
+//import net.bak3dnet.robotics.led.*;
+//import net.bak3dnet.robotics.led.modules.*;
 
 public class LED {
-	private LightDrive12 controller;
+	/*private LightDrive12 controller;
 	
 	public LED() {
 		controller = new LightDrive12(SerialPort.Port.kMXP);
@@ -96,11 +96,11 @@ public class LED {
 		if(s != ps) {
 			setColor(r0, g0, b0);
 		}
-		ps = s;*/
+		ps = s;
 		if(status) {
 			setColor(r0, g0, b0);
 		} else {
 			blink(r0, g0, b0, 0, 0, 0, speed);
 		}
-	}
+	}*/
 }

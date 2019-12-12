@@ -50,7 +50,7 @@ public class Robot extends TimedRobot
 		autoPicker.addOption("Teleop", AutoStations.TELEOP);
 		autoPicker.addOption("Motin Profiling", AutoStations.MOTION_PROFILING);
 		SmartDashboard.putData("Auto Picker", autoPicker);
-		led.setColor(0, 0, 255);
+		//led.setColor(0, 0, 255);
 		
 		//Put PID changers so we don't have to push code every tune
 		smp = RobotMap.SWERVE_MODULE_P;
@@ -80,29 +80,30 @@ public class Robot extends TimedRobot
 		SmartDashboard.putNumber("Heading", gyro.getHeading());
 		SmartDashboard.putString("Gyro Status", gyro.getStatus().toString());
 		SmartDashboard.putNumber("Drive Travel 1", drivetrain.getTravel());
+		SmartDashboard.putNumber("Drivetrain Go", drivetrain.get());
 		SmartDashboard.putNumber("Desired Heading", drivetrain.wrap(drivetrain.desiredHeading, -180.0, 180.0));
 		SmartDashboard.putNumber("Place State", semiAuto.placeState);
-		SmartDashboard.putNumber("R", led.r);
-		SmartDashboard.putNumber("G", led.g);
-		SmartDashboard.putNumber("B", led.b);
+		//SmartDashboard.putNumber("R", led.r);
+		//SmartDashboard.putNumber("G", led.g);
+		//SmartDashboard.putNumber("B", led.b);
 		SmartDashboard.putBoolean("Semi-Auto Done", semiAuto.placeState == -1);
 		SmartDashboard.putBoolean("Semiauto Engaged", semiAuto.engaged);
 	}
 	
 	@Override
 	public void disabledInit() {
-		led.setColor(255, 0, 0);
+		//led.setColor(255, 0, 0);
 	}
 	
 	@Override
 	public void disabledPeriodic() {
-		led.fade(3);
+		//led.fade(3);
 	}
 	
 	@Override
 	public void autonomousInit() {
 		drivetrain.startTravel();
-		led.setColor(0, 0, 255);
+		//led.setColor(0, 0, 255);
 		pState = -1;
 		startMatch = true;
 		semiAuto.t.reset();
@@ -135,11 +136,11 @@ public class Robot extends TimedRobot
 		//drivetrain.joystickDrive(fieldOriented);
 		
 		if(semiAuto.placeState == -1) {
-			led.status(255, 0, 255, 10+(int)(10*Math.sqrt(oi.getX()*oi.getX()+oi.getY()*oi.getY())*oi.getSlider()), fieldOriented);
+			//led.status(255, 0, 255, 10+(int)(10*Math.sqrt(oi.getX()*oi.getX()+oi.getY()*oi.getY())*oi.getSlider()), fieldOriented);
 		} else if(semiAuto.engaged) {
-			led.status(255, 0, 0, 10+(int)(10*Math.sqrt(oi.getX()*oi.getX()+oi.getY()*oi.getY())*oi.getSlider()), fieldOriented);
+			//led.status(255, 0, 0, 10+(int)(10*Math.sqrt(oi.getX()*oi.getX()+oi.getY()*oi.getY())*oi.getSlider()), fieldOriented);
 		} else {
-			led.status(0, 0, 255, 10+(int)(10*Math.sqrt(oi.getX()*oi.getX()+oi.getY()*oi.getY())*oi.getSlider()), fieldOriented);
+			//led.status(0, 0, 255, 10+(int)(10*Math.sqrt(oi.getX()*oi.getX()+oi.getY()*oi.getY())*oi.getSlider()), fieldOriented);
 		}
 		
 		SmartDashboard.putNumber("LED Speed", 10+(int)(10*Math.sqrt(oi.getX()*oi.getX()+oi.getY()*oi.getY())*oi.getSlider()));
