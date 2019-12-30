@@ -1,0 +1,8 @@
+.chart {
+    -fx-background-color: transparent;
+}
+.chart-plot-background {
+    -fx-background-image: url("../res/field.png");
+    -fx-background-color: transparent;
+    -fx-background-size: cover;
+}
