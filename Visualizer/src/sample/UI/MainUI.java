@@ -2,21 +2,23 @@ package sample.UI;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainUI {
+    public static double screenWidth;
+    public static double screenHeight;
+
     public static void setUI(Stage stage) {
+        screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+        screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+
         stage.setTitle("Pathfinding Visualizer");
-        stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-        stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+        stage.setWidth(screenWidth);
+        stage.setHeight(screenHeight);
 
-        double graphHeight = 0.80 * stage.getHeight();
-        double graphWidth = 2 * graphHeight;
-
-        Graph.initializeGraph(graphWidth, graphHeight);
+        Graph.initializeGraph();
         DataEntry.initializeDataEntry();
 
         VBox vBox = new VBox();

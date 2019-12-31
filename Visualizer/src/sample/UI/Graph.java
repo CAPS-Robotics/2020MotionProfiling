@@ -6,7 +6,7 @@ import javafx.scene.chart.NumberAxis;
 public class Graph {
     private static LineChart<Number, Number> graph;
 
-    public static void initializeGraph(double width, double height) {
+    public static void initializeGraph() {
         NumberAxis x = new NumberAxis("", 0, 54, 1);
         double xHeight = 20;
         x.setPrefHeight(xHeight);
@@ -19,13 +19,16 @@ public class Graph {
         y.setMinWidth(yWidth);
         y.setMaxWidth(yWidth);
 
+        double graphHeight = 0.80 * MainUI.screenHeight;
+        double graphWidth = 2 * graphHeight;
+
         graph = new LineChart<>(x, y);
-        graph.setMinWidth(width);
-        graph.setMaxWidth(width);
-        graph.setPrefWidth(width);
-        graph.setMinHeight(height);
-        graph.setMaxHeight(height);
-        graph.setPrefHeight(height);
+        graph.setMinWidth(graphWidth);
+        graph.setMaxWidth(graphWidth);
+        graph.setPrefWidth(graphWidth);
+        graph.setMinHeight(graphHeight);
+        graph.setMaxHeight(graphHeight);
+        graph.setPrefHeight(graphHeight);
         graph.setLegendVisible(false);
     }
 

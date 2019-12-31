@@ -1,10 +1,8 @@
 package sample.UI;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -12,7 +10,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 public class DataEntry {
-    private static final int MAX_POINTS = 10;
+    private static final int maxPoints = 10;
     private static ArrayList<DataTemplate> points;
     private static VBox vbox;
     private static HBox hbox;
@@ -49,7 +47,7 @@ public class DataEntry {
 
     private static void updateUI() {
         hbox.getChildren().clear();
-        boolean maxReached = points.size() >= 12;
+        boolean maxReached = points.size() >= maxPoints;
 
         for (DataTemplate point: points) {
             if(maxReached) point.disableButton();
@@ -61,6 +59,7 @@ public class DataEntry {
 
     private static class DataTemplate {
         private int pos;
+        private double paneWidth;
 
         private TextField x;
         private TextField y;
@@ -69,6 +68,8 @@ public class DataEntry {
 
         DataTemplate(int position) {
             pos = position;
+
+            paneWidth = (MainUI.screenWidth - ((maxPoints + 2) * 20)) / maxPoints;
 
             x = new TextField();
             y = new TextField();
@@ -97,6 +98,11 @@ public class DataEntry {
             pane.add(y, 1, 0, 1, 1);
             pane.add(theta, 0, 1, 1, 1);
             pane.add(addPoint, 1, 1, 1, 1);
+
+            pane.setPrefWidth(paneWidth);
+            pane.setMinWidth(paneWidth);
+            pane.setMaxWidth(paneWidth);
+
             return pane;
         }
     }
