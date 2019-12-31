@@ -20,13 +20,12 @@ public class DataEntry {
         points.add(new DataTemplate(1));
         points.add(new DataTemplate(2));
 
-        hbox = new HBox();
-        hbox.setSpacing(20);
-        hbox.getChildren().add(points.get(0).add());
-        hbox.getChildren().add(points.get(1).add());
-
         Button graphButton = new Button("Graph Path");
         graphButton.setFocusTraversable(false);
+
+        hbox = new HBox();
+        hbox.setSpacing(20);
+        updateUI();
 
         vbox = new VBox();
         vbox.setPadding(new Insets(20));
@@ -41,16 +40,29 @@ public class DataEntry {
         }
 
         points.add(pos++, new DataTemplate(pos));
+        updateUI();
+    }
 
+    private static void removePoint(int pos) {
+        for (int i = pos; i < points.size(); i++) {
+            points.get(i).decreasePos();
+        }
+
+        points.remove(pos - 1);
         updateUI();
     }
 
     private static void updateUI() {
         hbox.getChildren().clear();
         boolean maxReached = points.size() >= maxPoints;
+        boolean minReached = points.size() <= 2;
 
         for (DataTemplate point: points) {
-            if(maxReached) point.disableButton();
+            if(maxReached) point.disableAddButton();
+            else point.enableAddButton();
+
+            if(minReached) point.disableRemoveButton();
+            else point.enableRemoveButton();
             hbox.getChildren().add(point.add());
         }
     }
@@ -64,7 +76,9 @@ public class DataEntry {
         private TextField x;
         private TextField y;
         private TextField theta;
+
         private Button addPoint;
+        private Button removePoint;
 
         DataTemplate(int position) {
             pos = position;
@@ -74,7 +88,8 @@ public class DataEntry {
             x = new TextField();
             y = new TextField();
             theta = new TextField();
-            addPoint = new Button("Add Point");
+            addPoint = new Button("Add");
+            removePoint = new Button("Remove");
 
             x.setPromptText("x");
             y.setPromptText("y");
@@ -84,20 +99,41 @@ public class DataEntry {
             y.setFocusTraversable(false);
             theta.setFocusTraversable(false);
             addPoint.setFocusTraversable(false);
+            removePoint.setFocusTraversable(false);
+
+            addPoint.setPrefWidth(paneWidth / 2);
+            addPoint.setMinWidth(paneWidth / 2);
+            addPoint.setMaxWidth(paneWidth / 2);
+
+            removePoint.setPrefWidth(paneWidth / 2);
+            removePoint.setMinWidth(paneWidth / 2);
+            removePoint.setMaxWidth(paneWidth / 2);
 
             addPoint.setOnMouseClicked(mouseEvent -> addPoint(pos));
+            removePoint.setOnMouseClicked(mouseEvent -> removePoint(pos));
         }
 
-        public void disableButton() { addPoint.setDisable(true);}
+        public void enableAddButton() { addPoint.setDisable(false); }
+        public void disableAddButton() { addPoint.setDisable(true); }
+        public void enableRemoveButton() { removePoint.setDisable(false); }
+        public void disableRemoveButton() { removePoint.setDisable(true); }
 
         public void increasePos() { pos++; }
+        public void decreasePos() { pos--; }
 
         public GridPane add() {
+            HBox topRow = new HBox();
+            topRow.getChildren().add(x);
+            topRow.getChildren().add(y);
+            topRow.getChildren().add(theta);
+
+            HBox bottomRow = new HBox();
+            bottomRow.getChildren().add(addPoint);
+            bottomRow.getChildren().add(removePoint);
+
             GridPane pane = new GridPane();
-            pane.add(x, 0, 0, 1, 1);
-            pane.add(y, 1, 0, 1, 1);
-            pane.add(theta, 0, 1, 1, 1);
-            pane.add(addPoint, 1, 1, 1, 1);
+            pane.add(topRow, 0, 0, 1, 1);
+            pane.add(bottomRow, 0, 1, 1, 1);
 
             pane.setPrefWidth(paneWidth);
             pane.setMinWidth(paneWidth);
