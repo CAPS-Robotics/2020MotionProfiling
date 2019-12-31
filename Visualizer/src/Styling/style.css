@@ -1,8 +1,18 @@
 .chart {
     -fx-background-color: transparent;
+    -fx-padding: 0px;
 }
+
 .chart-plot-background {
     -fx-background-image: url("../res/field.png");
     -fx-background-color: transparent;
     -fx-background-size: cover;
+}
+
+.chart-content {
+    -fx-padding: 0px;
+}
+
+.axis {
+    -fx-minor-tick-count: 0;
 }
