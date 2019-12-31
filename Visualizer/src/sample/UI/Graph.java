@@ -6,7 +6,7 @@ import javafx.scene.chart.NumberAxis;
 public class Graph {
     private static LineChart<Number, Number> graph;
 
-    public static LineChart<Number, Number> initializeGraph(double width, double height) {
+    public static void initializeGraph(double width, double height) {
         NumberAxis x = new NumberAxis("", 0, 54, 1);
         double xHeight = 20;
         x.setPrefHeight(xHeight);
@@ -27,7 +27,7 @@ public class Graph {
         graph.setMaxHeight(height);
         graph.setPrefHeight(height);
         graph.setLegendVisible(false);
-
-        return graph;
     }
+
+    public static LineChart<Number, Number> getUIElement() { return graph; }
 }

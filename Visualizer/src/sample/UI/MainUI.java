@@ -16,15 +16,13 @@ public class MainUI {
         double graphHeight = 0.80 * stage.getHeight();
         double graphWidth = 2 * graphHeight;
 
-        Button graphButton = new Button("Graph Path");
-        graphButton.setTranslateX(20);
-        graphButton.setFocusTraversable(false);
+        Graph.initializeGraph(graphWidth, graphHeight);
+        DataEntry.initializeDataEntry();
 
         VBox vBox = new VBox();
         vBox.setPadding(new Insets(10, 0, 0, 0));
-        vBox.getChildren().add(Graph.initializeGraph(graphWidth, graphHeight));
-        vBox.getChildren().add(DataEntry.setupDataEntry());
-        vBox.getChildren().add(graphButton);
+        vBox.getChildren().add(Graph.getUIElement());
+        vBox.getChildren().add(DataEntry.getUIElement());
 
         Scene scene = new Scene(vBox, stage.getWidth(), stage.getHeight());
         scene.getStylesheets().add("Styling/style.css");
