@@ -1,7 +1,11 @@
 package sample.UI;
 
+import MotionProfiling.Spline;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+
+import java.util.ArrayList;
 
 public class Graph {
     private static LineChart<Number, Number> graph;
@@ -30,6 +34,27 @@ public class Graph {
         graph.setMaxHeight(graphHeight);
         graph.setPrefHeight(graphHeight);
         graph.setLegendVisible(false);
+    }
+
+    public static void graphData(ArrayList<DataEntry.DataTemplate> points) {
+        ArrayList<Spline> path = new ArrayList<>();
+
+        for (int i = 0; i < points.size() - 1; i++) {
+            DataEntry.DataTemplate p0 = points.get(i);
+            DataEntry.DataTemplate p1 = points.get(i+1);
+
+            path.add(new Spline(p0.getX(), p0.getY(), p1.getX(), p1.getY(), p0.getTheta(), p1.getTheta()));
+        }
+
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        for(Spline spline : path) {
+            for(double t = 0; t <= 1; t += 0.01) {
+                series.getData().add(new XYChart.Data<>(spline.getX(t), spline.getY(t)));
+            }
+        }
+
+        graph.getData().clear();
+        graph.getData().add(series);
     }
 
     public static LineChart<Number, Number> getUIElement() { return graph; }

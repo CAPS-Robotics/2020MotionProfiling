@@ -1,8 +1,10 @@
 package sample.UI;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,6 +24,7 @@ public class DataEntry {
 
         Button graphButton = new Button("Graph Path");
         graphButton.setFocusTraversable(false);
+        graphButton.setOnMouseClicked(mouseEvent -> Graph.graphData(points));
 
         hbox = new HBox();
         hbox.setSpacing(20);
@@ -69,7 +72,7 @@ public class DataEntry {
 
     public static VBox getUIElement() { return vbox; }
 
-    private static class DataTemplate {
+    public static class DataTemplate {
         private int pos;
         private double paneWidth;
 
@@ -120,6 +123,10 @@ public class DataEntry {
 
         public void increasePos() { pos++; }
         public void decreasePos() { pos--; }
+
+        public double getX() { return Double.parseDouble(x.getText()); }
+        public double getY() { return Double.parseDouble(y.getText()); }
+        public double getTheta() { return Double.parseDouble(theta.getText()); }
 
         public GridPane add() {
             HBox topRow = new HBox();
