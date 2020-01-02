@@ -1,10 +1,9 @@
 package sample.UI;
 
 import MotionProfiling.Spline;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 
+import javax.sound.sampled.Line;
 import java.util.ArrayList;
 
 public class Graph {
@@ -33,6 +32,7 @@ public class Graph {
         graph.setMinHeight(graphHeight);
         graph.setMaxHeight(graphHeight);
         graph.setPrefHeight(graphHeight);
+        graph.setCreateSymbols(false);
         graph.setLegendVisible(false);
     }
 
@@ -46,15 +46,16 @@ public class Graph {
             path.add(new Spline(p0.getX(), p0.getY(), p1.getX(), p1.getY(), p0.getTheta(), p1.getTheta()));
         }
 
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        graph.getData().clear();
+
+        XYChart.Series<Number, Number> series;
         for(Spline spline : path) {
+            series = new XYChart.Series<>();
             for(double t = 0; t <= 1; t += 0.01) {
                 series.getData().add(new XYChart.Data<>(spline.getX(t), spline.getY(t)));
             }
+            graph.getData().add(series);
         }
-
-        graph.getData().clear();
-        graph.getData().add(series);
     }
 
     public static LineChart<Number, Number> getUIElement() { return graph; }

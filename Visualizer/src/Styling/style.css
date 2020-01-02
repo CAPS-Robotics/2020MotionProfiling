@@ -16,3 +16,11 @@
 .axis {
     -fx-minor-tick-count: 0;
 }
+
+.chart-vertical-grid-lines {
+    -fx-stroke: #898887;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: #898887;
+}
