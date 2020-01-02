@@ -23,7 +23,6 @@ public class DataEntry {
         points.add(new DataTemplate(2));
 
         Button graphButton = new Button("Graph Path");
-        graphButton.setFocusTraversable(false);
         graphButton.setOnMouseClicked(mouseEvent -> Graph.graphData(points));
 
         hbox = new HBox();
@@ -98,9 +97,6 @@ public class DataEntry {
             y.setPromptText("y");
             theta.setPromptText("angle");
 
-            x.setFocusTraversable(false);
-            y.setFocusTraversable(false);
-            theta.setFocusTraversable(false);
             addPoint.setFocusTraversable(false);
             removePoint.setFocusTraversable(false);
 
