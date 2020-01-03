@@ -34,6 +34,7 @@ public class Graph {
         graph.setPrefHeight(graphHeight);
         graph.setCreateSymbols(false);
         graph.setLegendVisible(false);
+        graph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
     }
 
     public static void graphData(ArrayList<DataEntry.DataTemplate> points) {
