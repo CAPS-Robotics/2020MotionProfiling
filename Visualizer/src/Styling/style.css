@@ -24,3 +24,7 @@
 .chart-horizontal-grid-lines {
     -fx-stroke: #898887;
 }
+
+#error {
+    -fx-text-fill: red;
+}

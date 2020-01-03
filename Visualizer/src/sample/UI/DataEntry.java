@@ -1,10 +1,9 @@
 package sample.UI;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,11 +15,16 @@ public class DataEntry {
     private static ArrayList<DataTemplate> points;
     private static VBox vbox;
     private static HBox hbox;
+    private static Label errorMessage;
 
     public static void initializeDataEntry() {
         points = new ArrayList<>();
         points.add(new DataTemplate(1));
         points.add(new DataTemplate(2));
+
+        errorMessage = new Label();
+        errorMessage.setId("error");
+        errorMessage.setVisible(false);
 
         Button graphButton = new Button("Graph Path");
         graphButton.setOnMouseClicked(mouseEvent -> Graph.graphData(points));
@@ -33,7 +37,9 @@ public class DataEntry {
         vbox.setPadding(new Insets(20));
         vbox.setSpacing(20);
         vbox.getChildren().add(hbox);
+        vbox.getChildren().add(errorMessage);
         vbox.getChildren().add(graphButton);
+        vbox.setSpacing(10);
     }
 
     private static void addPoint(int pos) {
@@ -67,6 +73,15 @@ public class DataEntry {
             else point.enableRemoveButton();
             hbox.getChildren().add(point.add());
         }
+    }
+
+    public static void setErrorMessage(String message) {
+        errorMessage.setText(message);
+        errorMessage.setVisible(true);
+    }
+
+    public static void removeErrorMessage() {
+        errorMessage.setVisible(false);
     }
 
     public static VBox getUIElement() { return vbox; }
