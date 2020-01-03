@@ -132,12 +132,27 @@ public class DataEntry {
         public void enableRemoveButton() { removePoint.setDisable(false); }
         public void disableRemoveButton() { removePoint.setDisable(true); }
 
+        public int getPos() { return pos; }
         public void increasePos() { pos++; }
         public void decreasePos() { pos--; }
 
-        public double getX() { return Double.parseDouble(x.getText()); }
-        public double getY() { return Double.parseDouble(y.getText()); }
-        public double getTheta() { return Double.parseDouble(theta.getText()); }
+        public double getX() {
+            return parseDouble(x.getText());
+        }
+        public double getY() {
+            return parseDouble(y.getText());
+        }
+        public double getTheta() {
+            return parseDouble(theta.getText());
+        }
+
+        private double parseDouble(String s) {
+            try {
+                return Double.parseDouble(s);
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException(String.valueOf(pos));
+            }
+        }
 
         public GridPane add() {
             HBox topRow = new HBox();
