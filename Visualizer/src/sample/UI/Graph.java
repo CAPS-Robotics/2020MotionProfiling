@@ -3,8 +3,6 @@ package sample.UI;
 import MotionProfiling.Spline;
 import javafx.scene.chart.*;
 
-import javax.sound.sampled.Line;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Graph {
