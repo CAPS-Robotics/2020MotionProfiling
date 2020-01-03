@@ -39,23 +39,32 @@ public class Graph {
 
     public static void graphData(ArrayList<DataEntry.DataTemplate> points) {
         ArrayList<Spline> path = new ArrayList<>();
+        boolean badData = false;
 
         for (int i = 0; i < points.size() - 1; i++) {
-            DataEntry.DataTemplate p0 = points.get(i);
-            DataEntry.DataTemplate p1 = points.get(i+1);
+            try {
+                DataEntry.DataTemplate p0 = points.get(i);
+                DataEntry.DataTemplate p1 = points.get(i + 1);
 
-            path.add(new Spline(p0.getX(), p0.getY(), p1.getX(), p1.getY(), p0.getTheta(), p1.getTheta()));
+                path.add(new Spline(p0.getX(), p0.getY(), p1.getX(), p1.getY(), p0.getTheta(), p1.getTheta()));
+            } catch (Exception e) {
+                DataEntry.setErrorMessage("Invalid data");
+                badData = true;
+            }
         }
 
-        graph.getData().clear();
+        if(!badData) {
+            DataEntry.removeErrorMessage();
+            graph.getData().clear();
 
-        XYChart.Series<Number, Number> series;
-        for(Spline spline : path) {
-            series = new XYChart.Series<>();
-            for(double t = 0; t <= 1; t += 0.01) {
-                series.getData().add(new XYChart.Data<>(spline.getX(t), spline.getY(t)));
+            XYChart.Series<Number, Number> series;
+            for (Spline spline : path) {
+                series = new XYChart.Series<>();
+                for (double t = 0; t <= 1; t += 0.01) {
+                    series.getData().add(new XYChart.Data<>(spline.getX(t), spline.getY(t)));
+                }
+                graph.getData().add(series);
             }
-            graph.getData().add(series);
         }
     }
 
