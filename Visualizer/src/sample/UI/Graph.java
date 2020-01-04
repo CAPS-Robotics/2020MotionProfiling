@@ -2,6 +2,8 @@ package sample.UI;
 
 import MotionProfiling.Spline;
 import javafx.scene.chart.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 
@@ -54,7 +56,7 @@ public class Graph {
                 double theta1 = p1.getTheta();
                 if(isDataOutOfRange(x1, y1, theta1)) throw new Exception(String.valueOf(p1.getPos()));
 
-                path.add(new Spline(x0, y0, x1, y1, theta0, theta1));
+                path.add(new Spline(x0, y0, x1, y1, 90-theta0, 90-theta1));
             } catch (NumberFormatException e) {
                 DataEntry.setErrorMessage("Invalid data at point " + e.getMessage());
                 badData = true;
@@ -80,7 +82,7 @@ public class Graph {
     }
 
     private static boolean isDataOutOfRange(double x, double y, double theta) {
-        return x < 0 || x > 54 || y < 0 || y > 27 || theta < -90 || theta > 90;
+        return x < 0 || x > 54 || y < 0 || y > 27 || theta < -180 || theta > 180;
     }
 
     public static LineChart<Number, Number> getUIElement() { return graph; }
