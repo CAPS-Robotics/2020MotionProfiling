@@ -11,20 +11,23 @@ public class Graph {
     private static LineChart<Number, Number> graph;
 
     public static void initializeGraph() {
-        NumberAxis x = new NumberAxis("", 0, 54, 1);
+        double xLength = 52.4375 / 1674 * 1826;
+        double yHeight = 26.9375 / 861 * 958;
+
+        NumberAxis x = new NumberAxis("", 0, xLength, 1);
         double xHeight = 20;
         x.setPrefHeight(xHeight);
         x.setMinHeight(xHeight);
         x.setMaxHeight(xHeight);
 
-        NumberAxis y = new NumberAxis("",0, 27, 1);
+        NumberAxis y = new NumberAxis("",0, yHeight, 1);
         double yWidth = 40;
         y.setPrefWidth(yWidth);
         y.setMinWidth(yWidth);
         y.setMaxWidth(yWidth);
 
         double graphHeight = 0.80 * MainUI.screenHeight;
-        double graphWidth = 2 * graphHeight;
+        double graphWidth = xLength / yHeight * graphHeight;
 
         graph = new LineChart<>(x, y);
         graph.setMinWidth(graphWidth);
