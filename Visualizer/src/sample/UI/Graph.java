@@ -85,7 +85,7 @@ public class Graph {
     }
 
     private static boolean isDataOutOfRange(double x, double y, double theta) {
-        return x < 0 || x > 54 || y < 0 || y > 27 || theta < -180 || theta > 180;
+        return x < 0 || x > 55 || y < 0 || y > 28.5 || theta < -180 || theta > 180;
     }
 
     public static LineChart<Number, Number> getUIElement() { return graph; }
