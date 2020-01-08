@@ -1,14 +1,23 @@
 package sample.UI;
 
 import MotionProfiling.Spline;
+import MotionProfiling.VelocityProfile;
 import javafx.scene.chart.*;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 
 public class PathGraph {
     private static LineChart<Number, Number> graph;
+
+    private static HBox hbox;
+
+    private static Label pathDistance;
+    private static Label pathTime;
 
     public static void initializeGraph() {
         double xLength = 52.4375 / 1674 * 1826;
@@ -39,6 +48,19 @@ public class PathGraph {
         graph.setCreateSymbols(false);
         graph.setLegendVisible(false);
         graph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
+
+        pathDistance = new Label("Path Distance: ");
+        pathTime = new Label("Path Time: ");
+
+        VBox vbox = new VBox();
+        vbox.getChildren().add(pathDistance);
+        vbox.getChildren().add(pathTime);
+        vbox.setSpacing(20);
+
+        hbox = new HBox();
+        hbox.getChildren().add(graph);
+        hbox.getChildren().add(vbox);
+        hbox.setSpacing((MainUI.screenWidth - graphWidth) / 2 - 50);
     }
 
     public static void graphData(ArrayList<DataEntry.DataTemplate> points) {
@@ -70,6 +92,9 @@ public class PathGraph {
         }
 
         if(!badData) {
+            VelocityProfile.setPath(path);
+            VelocityProfile.calculateDistance();
+
             DataEntry.removeErrorMessage();
             graph.getData().clear();
 
@@ -89,5 +114,5 @@ public class PathGraph {
         return x < 0 || x > 55 || y < 0 || y > 28.5 || theta < -180 || theta > 180;
     }
 
-    public static LineChart<Number, Number> getUIElement() { return graph; }
+    public static HBox getUIElement() { return hbox; }
 }

@@ -1,11 +1,8 @@
 package sample.UI;
 
-import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-
-import javax.sound.sampled.Line;
 
 public class MotionGraph {
     private static LineChart graph;
