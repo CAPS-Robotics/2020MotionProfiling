@@ -50,13 +50,13 @@ public class Spline {
     public double getddy(double t) {
         return 20 * ay * Math.pow(t, 3) + 12 * by * Math.pow(t, 2) + 6 * cy * Math.pow(t, 1) + 2 * dy;
     }
-    public double getCurvatureSquared(double t) {
-        return Math.pow(getdx(t) * getddy(t) - getdy(t) * getddx(t) / Math.pow(Math.pow(getdx(t), 2) + Math.pow(getdy(t), 2), 1.5), 2);
+    public double getCurvature(double t) {
+        return (getdx(t) * getddy(t) - getdy(t) * getddx(t)) / Math.pow(Math.pow(getdx(t), 2) + Math.pow(getdy(t), 2), 1.5);
     }
     public double getCurvatureSum() {
         double sum = 0;
         for(double t = 0; t <= 1; t += 0.01) {
-            sum += getCurvatureSquared(t);
+            sum += getCurvature(t);
         }
         return sum;
     }

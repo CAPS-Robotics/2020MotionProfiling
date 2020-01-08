@@ -27,18 +27,27 @@ public class DataEntry {
         errorMessage.setVisible(false);
 
         Button graphButton = new Button("Graph Path");
-        graphButton.setOnMouseClicked(mouseEvent -> Graph.graphData(points));
+        graphButton.setOnMouseClicked(mouseEvent -> PathGraph.graphData(points));
+
+        Button openProfiling = new Button("Open Velocity Profile");
+        openProfiling.setOnMouseClicked(mouseEvent -> MotionUI.setUI());
+
+        HBox buttonHbox = new HBox();
+        buttonHbox.setPadding(new Insets(0));
+        buttonHbox.setSpacing(MainUI.screenWidth - 400);
+        buttonHbox.getChildren().add(graphButton);
+        buttonHbox.getChildren().add(openProfiling);
 
         hbox = new HBox();
         hbox.setSpacing(20);
         updateUI();
 
         vbox = new VBox();
-        vbox.setPadding(new Insets(20));
+        vbox.setPadding(new Insets(10));
         vbox.setSpacing(20);
         vbox.getChildren().add(hbox);
         vbox.getChildren().add(errorMessage);
-        vbox.getChildren().add(graphButton);
+        vbox.getChildren().add(buttonHbox);
         vbox.setSpacing(10);
     }
 

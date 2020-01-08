@@ -7,7 +7,7 @@ import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 
-public class Graph {
+public class PathGraph {
     private static LineChart<Number, Number> graph;
 
     public static void initializeGraph() {
@@ -74,6 +74,7 @@ public class Graph {
             graph.getData().clear();
 
             XYChart.Series<Number, Number> series;
+            XYChart.Series<Number, Number> series2;
             for (Spline spline : path) {
                 series = new XYChart.Series<>();
                 for (double t = 0; t <= 1; t += 0.001) {

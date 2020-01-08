@@ -18,12 +18,12 @@ public class MainUI {
         stage.setWidth(screenWidth);
         stage.setHeight(screenHeight);
 
-        Graph.initializeGraph();
+        PathGraph.initializeGraph();
         DataEntry.initializeDataEntry();
 
         VBox vBox = new VBox();
         vBox.setPadding(new Insets(10, 0, 0, 0));
-        vBox.getChildren().add(Graph.getUIElement());
+        vBox.getChildren().add(PathGraph.getUIElement());
         vBox.getChildren().add(DataEntry.getUIElement());
 
         Scene scene = new Scene(vBox, stage.getWidth(), stage.getHeight());
