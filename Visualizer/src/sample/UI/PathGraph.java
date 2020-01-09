@@ -95,11 +95,11 @@ public class PathGraph {
             VelocityProfile.setPath(path);
             VelocityProfile.calculateDistance();
 
+            pathDistance.setText(String.format("Path Distance: %.3f %n", VelocityProfile.getPathDistance()));
             DataEntry.removeErrorMessage();
             graph.getData().clear();
 
             XYChart.Series<Number, Number> series;
-            XYChart.Series<Number, Number> series2;
             for (Spline spline : path) {
                 series = new XYChart.Series<>();
                 for (double t = 0; t <= 1; t += 0.001) {

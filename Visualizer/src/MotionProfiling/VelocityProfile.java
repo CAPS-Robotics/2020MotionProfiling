@@ -8,12 +8,12 @@ public class VelocityProfile {
 
     private static ArrayList<Spline> path = new ArrayList<>();
 
-    private double pathDistance;
-    private double pathTime;
+    private static double pathDistance;
+    private static double pathTime;
 
     public static void setPath(ArrayList<Spline> motionPath) { path = motionPath; }
 
-    public static double calculateDistance() {
+    public static void calculateDistance() {
         double distance = 0;
 
         for(Spline spline : path) {
@@ -21,8 +21,8 @@ public class VelocityProfile {
                 distance += Math.sqrt(Math.pow(spline.getdx(t), 2) + Math.pow(spline.getdy(t), 2)) * 0.001;
             }
         }
-
-        System.out.println(distance);
-        return distance;
+        pathDistance = distance;
     }
+
+    public static double getPathDistance() { return pathDistance; }
 }
