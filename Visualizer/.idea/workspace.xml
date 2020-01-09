@@ -10,7 +10,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MotionProfiling/VelocityProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MotionProfiling/VelocityProfile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/UI/MotionGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/UI/MotionGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/UI/PathGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/UI/PathGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/UI/MotionUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/UI/MotionUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,7 +240,7 @@
       <workItem from="1578287813267" duration="102000" />
       <workItem from="1578422937036" duration="7416000" />
       <workItem from="1578505954203" duration="4302000" />
-      <workItem from="1578596460537" duration="6295000" />
+      <workItem from="1578596460537" duration="8522000" />
     </task>
     <task id="LOCAL-00001" summary="Starting UI">
       <created>1577670466238</created>
@@ -447,37 +447,37 @@
     </state>
     <state x="592" y="219" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578515626765" />
     <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.2048.1112@0.0.1920.1040" timestamp="1577900543370" />
-    <state width="746" height="221" key="GridCell.Tab.0.bottom" timestamp="1578606165599">
+    <state width="746" height="221" key="GridCell.Tab.0.bottom" timestamp="1578608586693">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="221" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578606165599" />
+    <state width="746" height="221" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578608586693" />
     <state width="698" height="221" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1578604524644" />
     <state width="1493" height="221" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1578520920028" />
     <state width="1877" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.2048.1112@0.0.1920.1040" timestamp="1578287014860" />
     <state width="2005" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.2048.1112@1920.0.2048.1112" timestamp="1578287263836" />
     <state width="1877" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1578181861503" />
-    <state width="746" height="221" key="GridCell.Tab.0.center" timestamp="1578606165599">
+    <state width="746" height="221" key="GridCell.Tab.0.center" timestamp="1578608586692">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="221" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578606165599" />
+    <state width="746" height="221" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578608586692" />
     <state width="698" height="221" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1578604524643" />
     <state width="1493" height="221" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1578520920028" />
     <state width="1877" height="281" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.2048.1112@0.0.1920.1040" timestamp="1578287014860" />
     <state width="2005" height="281" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.2048.1112@1920.0.2048.1112" timestamp="1578287263835" />
     <state width="1877" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1578181861502" />
-    <state width="746" height="221" key="GridCell.Tab.0.left" timestamp="1578606165598">
+    <state width="746" height="221" key="GridCell.Tab.0.left" timestamp="1578608586692">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="221" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578606165598" />
+    <state width="746" height="221" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578608586692" />
     <state width="698" height="221" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1578604524642" />
     <state width="1493" height="221" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1578520920028" />
     <state width="1877" height="281" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.2048.1112@0.0.1920.1040" timestamp="1578287014859" />
     <state width="2005" height="281" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.2048.1112@1920.0.2048.1112" timestamp="1578287263834" />
     <state width="1877" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1578181861502" />
-    <state width="746" height="221" key="GridCell.Tab.0.right" timestamp="1578606165599">
+    <state width="746" height="221" key="GridCell.Tab.0.right" timestamp="1578608586692">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="746" height="221" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578606165599" />
+    <state width="746" height="221" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@0.0.1536.824" timestamp="1578608586692" />
     <state width="698" height="221" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1440.860@1920.0.1440.860" timestamp="1578604524644" />
     <state width="1493" height="221" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1578520920028" />
     <state width="1877" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.2048.1112@0.0.1920.1040" timestamp="1578287014860" />

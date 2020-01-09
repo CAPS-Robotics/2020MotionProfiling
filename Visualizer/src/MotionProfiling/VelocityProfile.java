@@ -1,7 +1,5 @@
 package MotionProfiling;
 
-import com.sun.xml.internal.ws.config.management.policy.ManagementAssertionCreator;
-
 import java.util.ArrayList;
 
 public class VelocityProfile {
@@ -14,6 +12,8 @@ public class VelocityProfile {
     private static double pathTime;
 
     private static ArrayList<Double> times;
+    private static ArrayList<Double> leftVelocities;
+    private static ArrayList<Double> rightVelocities;
     private static ArrayList<Double> velocities;
 
     public static void setPath(ArrayList<Spline> motionPath) { path = motionPath; }
@@ -34,10 +34,14 @@ public class VelocityProfile {
 
     public static void calculateVelocities() {
         times = new ArrayList<>();
+        leftVelocities = new ArrayList<>();
+        rightVelocities = new ArrayList<>();
         velocities = new ArrayList<>();
 
         double distance = 0;
         double time = 0;
+        double pLeftVelocity = 0;
+        double pRightVelocity = 0;
         double pVelocity = 0;
 
         for(Spline spline : path) {
@@ -49,7 +53,6 @@ public class VelocityProfile {
 
                 distance += dDistance;
                 time += dTime;
-                System.out.println(velocity);
                 pVelocity = velocity;
 
                 times.add(time);
@@ -61,5 +64,7 @@ public class VelocityProfile {
     }
 
     public static ArrayList<Double> getTimes() { return times; }
+    public static ArrayList<Double> getLeftVelocities() { return leftVelocities; }
+    public static ArrayList<Double> getRightVelocities() { return rightVelocities; }
     public static ArrayList<Double> getVelocities() { return velocities; }
 }
