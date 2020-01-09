@@ -1,8 +1,11 @@
 package sample.UI;
 
+import MotionProfiling.VelocityProfile;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+
+import java.util.ArrayList;
 
 public class MotionGraph {
     private static LineChart graph;
@@ -24,10 +27,14 @@ public class MotionGraph {
     public static void graphData() {
         XYChart.Series series = new XYChart.Series();
 
-        series.getData().add(new XYChart.Data<Number, Number>(2, 4));
-        series.getData().add(new XYChart.Data<Number, Number>(4, 8));
-        series.getData().add(new XYChart.Data<Number, Number>(9, 18));
+        ArrayList<Double> times = VelocityProfile.getTimes();
+        ArrayList<Double> velocities = VelocityProfile.getVelocities();
 
+        for(int i = 0; i < times.size(); i++) {
+            series.getData().add(new XYChart.Data<Number, Number>(times.get(i), velocities.get(i)));
+        }
+
+        graph.getData().clear();
         graph.getData().add(series);
     }
 
