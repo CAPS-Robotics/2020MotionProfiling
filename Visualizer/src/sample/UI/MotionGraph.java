@@ -21,7 +21,7 @@ public class MotionGraph {
         robotY.setLabel("Velocity (ft/s)");
 
         robotVelocityGraph = new LineChart(robotX, robotY);
-        motorVelocityGraph.setTitle("Robot Velocities");
+        robotVelocityGraph.setTitle("Robot Velocities");
         robotVelocityGraph.setCreateSymbols(false);
         robotVelocityGraph.setLegendVisible(false);
         robotVelocityGraph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
@@ -34,8 +34,8 @@ public class MotionGraph {
         motorVelocityGraph = new LineChart(motorX, motorY);
         motorVelocityGraph.setTitle("Motor Velocities");
         motorVelocityGraph.setCreateSymbols(false);
-        robotVelocityGraph.setLegendVisible(true);
-        robotVelocityGraph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
+        motorVelocityGraph.setLegendVisible(true);
+        motorVelocityGraph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
 
         graphData();
     }

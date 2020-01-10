@@ -43,20 +43,20 @@ public class Spline {
 
     public double getLeftPosX(double t) { return getXOffsetPos(t, true); }
     public double getLeftPosY(double t) { return getYOffsetPos(t, true); }
-    public double getRightPosX(double t) { return getXOffsetPos(t, true); }
+    public double getRightPosX(double t) { return getXOffsetPos(t, false); }
     public double getRightPosY(double t) { return getYOffsetPos(t, false); }
 
     private double getXOffsetPos(double t, boolean left) {
-        if(getNormalSlope(t) == 0) return getX(t);
-        return getX(t) + Math.sqrt(Math.pow(VelocityProfile.WHEELBASE / 2, 2) / (2 * Math.pow(getNormalSlope(t), 2))) * (left ? -1 : 1);
+        if(getNormalSlope(t, left) > -0.01 && getNormalSlope(t, left) < 0.01) return getX(t) + VelocityProfile.WHEELBASE / 2 * (left ? -1 : 1);
+        return getX(t) + Math.sqrt(Math.pow(VelocityProfile.WHEELBASE / 2, 2) / (Math.pow(getNormalSlope(t, left), 2) + 1)) * (left ? -1 : 1);
     }
     private double getYOffsetPos(double t, boolean left) {
-        return getY(t) + getNormalSlope(t) * (getXOffsetPos(t, left) - getX(t)) * (left ? -1 : 1);
+        if(getNormalSlope(t, left) > -0.01 && getNormalSlope(t, left) < 0.01) return getY(t);
+        return getY(t) + getNormalSlope(t, left) * (getXOffsetPos(t, left) - getX(t)) * (left ? -1 : 1);
     }
-    private double getNormalSlope(double t) {
-        if (getdx(t) == 0) return 0;
-        else if(getdy(t) == 0) return 999;
-        return -1 / (getdy(t) / getdx(t));
+    private double getNormalSlope(double t, boolean left) {
+        if(getdy(t) == 0) return 999 * (left ? -1 : 1);
+        return -1 * getdx(t) / getdy(t);
     }
 
     public double getX(double t) {

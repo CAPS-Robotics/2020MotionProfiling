@@ -58,6 +58,8 @@ public class VelocityProfile {
 
                 times.add(time);
                 velocities.add(velocity);
+                leftVelocities.add(velocity);
+                rightVelocities.add((velocity + 10));
             }
         }
         pathTime = time;
