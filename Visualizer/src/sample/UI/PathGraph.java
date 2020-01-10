@@ -102,12 +102,22 @@ public class PathGraph {
             graph.getData().clear();
 
             XYChart.Series<Number, Number> series;
+            XYChart.Series<Number, Number> leftSeries;
+            XYChart.Series<Number, Number> rightSeries;
+
             for (Spline spline : path) {
                 series = new XYChart.Series<>();
+                leftSeries = new XYChart.Series<>();
+                rightSeries = new XYChart.Series<>();
                 for (double t = 0; t <= 1; t += 0.001) {
                     series.getData().add(new XYChart.Data<>(spline.getX(t), spline.getY(t)));
+                    leftSeries.getData().add(new XYChart.Data<>(spline.getLeftPosX(t), spline.getLeftPosY(t)));
+                    rightSeries.getData().add(new XYChart.Data<>(spline.getRightPosX(t), spline.getRightPosY(t)));
+                    System.out.println(spline.getLeftPosX(t));
                 }
                 graph.getData().add(series);
+                graph.getData().add(leftSeries);
+                graph.getData().add(rightSeries);
             }
         }
     }

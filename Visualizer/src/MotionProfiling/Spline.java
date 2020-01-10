@@ -32,6 +32,33 @@ public class Spline {
         ey = Math.sin(Math.toRadians(theta0)) * scale;
         fy = y0;
     }
+
+    public double getCurvatureSum() {
+        double sum = 0;
+        for(double t = 0; t <= 1; t += 0.01) {
+            sum += getCurvature(t);
+        }
+        return sum;
+    }
+
+    public double getLeftPosX(double t) { return getXOffsetPos(t, true); }
+    public double getLeftPosY(double t) { return getYOffsetPos(t, true); }
+    public double getRightPosX(double t) { return getXOffsetPos(t, true); }
+    public double getRightPosY(double t) { return getYOffsetPos(t, false); }
+
+    private double getXOffsetPos(double t, boolean left) {
+        if(getNormalSlope(t) == 0) return getX(t);
+        return getX(t) + Math.sqrt(Math.pow(VelocityProfile.WHEELBASE / 2, 2) / (2 * Math.pow(getNormalSlope(t), 2))) * (left ? -1 : 1);
+    }
+    private double getYOffsetPos(double t, boolean left) {
+        return getY(t) + getNormalSlope(t) * (getXOffsetPos(t, left) - getX(t)) * (left ? -1 : 1);
+    }
+    private double getNormalSlope(double t) {
+        if (getdx(t) == 0) return 0;
+        else if(getdy(t) == 0) return 999;
+        return -1 / (getdy(t) / getdx(t));
+    }
+
     public double getX(double t) {
         return ax * Math.pow(t, 5) + bx * Math.pow(t, 4) + cx * Math.pow(t, 3) + dx * Math.pow(t, 2) + ex * Math.pow(t, 1) + fx;
     }
@@ -52,16 +79,5 @@ public class Spline {
     }
     public double getCurvature(double t) {
         return (getdx(t) * getddy(t) - getdy(t) * getddx(t)) / Math.pow(Math.pow(getdx(t), 2) + Math.pow(getdy(t), 2), 1.5);
-    }
-    public double getCurvatureSum() {
-        double sum = 0;
-        for(double t = 0; t <= 1; t += 0.01) {
-            sum += getCurvature(t);
-        }
-        return sum;
-    }
-
-    private void optimizeScale() {
-
     }
 }

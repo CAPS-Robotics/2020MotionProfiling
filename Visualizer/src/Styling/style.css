@@ -25,10 +25,6 @@
     -fx-stroke: #898887;
 }
 
-.chart-series-line {
-    -fx-stroke-width: 10px;
-}
-
 #error {
     -fx-text-fill: red;
 }

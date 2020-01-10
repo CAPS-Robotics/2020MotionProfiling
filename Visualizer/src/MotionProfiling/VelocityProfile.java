@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class VelocityProfile {
     public static final double MAX_VELOCITY = 14.33;
     public static final double MAX_ACCELERATION = 9;
+    public static final double WHEELBASE = 3;
 
     private static ArrayList<Spline> path = new ArrayList<>();
 
