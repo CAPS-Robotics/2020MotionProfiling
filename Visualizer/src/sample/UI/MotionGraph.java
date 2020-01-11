@@ -15,6 +15,8 @@ public class MotionGraph {
     private static LineChart motorVelocityGraph;
 
     public static void initializeGraph() {
+        double graphHeight = (MainUI.screenHeight - 60) / 2;
+
         NumberAxis robotX = new NumberAxis();
         robotX.setLabel("Time (s)");
         NumberAxis robotY = new NumberAxis();
@@ -22,6 +24,9 @@ public class MotionGraph {
 
         robotVelocityGraph = new LineChart(robotX, robotY);
         robotVelocityGraph.setTitle("Robot Velocities");
+        robotVelocityGraph.setPrefHeight(graphHeight);
+        robotVelocityGraph.setMinHeight(graphHeight);
+        robotVelocityGraph.setMaxHeight(graphHeight);
         robotVelocityGraph.setCreateSymbols(false);
         robotVelocityGraph.setLegendVisible(false);
         robotVelocityGraph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
@@ -33,6 +38,9 @@ public class MotionGraph {
 
         motorVelocityGraph = new LineChart(motorX, motorY);
         motorVelocityGraph.setTitle("Motor Velocities");
+        motorVelocityGraph.setPrefHeight(graphHeight);
+        motorVelocityGraph.setMinHeight(graphHeight);
+        motorVelocityGraph.setMaxHeight(graphHeight);
         motorVelocityGraph.setCreateSymbols(false);
         motorVelocityGraph.setLegendVisible(true);
         motorVelocityGraph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
@@ -49,6 +57,9 @@ public class MotionGraph {
         XYChart.Series robotData = new XYChart.Series();
         XYChart.Series leftData =  new XYChart.Series();
         XYChart.Series rightData = new XYChart.Series();
+
+        leftData.setName("Left Motor");
+        rightData.setName("Right Motor");
 
         for(int i = 0; i < times.size(); i++) {
             double time = times.get(i);

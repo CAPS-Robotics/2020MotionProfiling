@@ -92,6 +92,8 @@ public class PathGraph {
         }
 
         if(!badData) {
+            DataEntry.enableProfiling();
+
             VelocityProfile.setPath(path);
             VelocityProfile.calculateDistance();
             VelocityProfile.calculateVelocities();

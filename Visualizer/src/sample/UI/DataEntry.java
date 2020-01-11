@@ -16,6 +16,7 @@ public class DataEntry {
     private static VBox vbox;
     private static HBox hbox;
     private static Label errorMessage;
+    private static Button openProfiling;
 
     public static void initializeDataEntry() {
         points = new ArrayList<>();
@@ -29,7 +30,8 @@ public class DataEntry {
         Button graphButton = new Button("Graph Path");
         graphButton.setOnMouseClicked(mouseEvent -> PathGraph.graphData(points));
 
-        Button openProfiling = new Button("Open Velocity Profile");
+        openProfiling = new Button("Open Velocity Profile");
+        openProfiling.setDisable(true);
         openProfiling.setOnMouseClicked(mouseEvent -> MotionUI.setUI());
 
         HBox buttonHbox = new HBox();
@@ -92,6 +94,8 @@ public class DataEntry {
     public static void removeErrorMessage() {
         errorMessage.setVisible(false);
     }
+
+    public static void enableProfiling() { openProfiling.setDisable(false); }
 
     public static VBox getUIElement() { return vbox; }
 
