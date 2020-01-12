@@ -31,12 +31,6 @@ public class Spline {
         dy = 0d;
         ey = checkZero(Math.sin(Math.toRadians(theta0)) * scale);
         fy = checkZero(y0);
-
-        //System.out.println(ax + ", " + bx + ", " + cx + ", " + dx + ", " + ex + ", " + fx);
-        //System.out.println(ay + ", " + by + ", " + cy + ", " + dy + ", " + ey + ", " + fy);
-        System.out.println(getdy(0.001));
-        System.out.println(getdx(0));
-        System.out.println();
     }
 
     private double checkZero(double d) {
@@ -61,7 +55,7 @@ public class Spline {
         return getX(t) + (Math.sqrt(Math.pow(VelocityProfile.WHEELBASE / 2, 2) - Math.pow(getYOffsetPos(t, left) - getY(t), 2))) * (left ? -1 : 1) * (getdy(t) > 0 ? 1 : -1);
     }
     private double getYOffsetPos(double t, boolean left) {
-        if(Double.isInfinite(getNormalSlope(t))) return getY(t) + VelocityProfile.WHEELBASE / 2 * (left ? -1 : 1) * (t - 0.001 > 0 ? (getdy(t - 0.001) > 0 ? 1 : -1) : (getdy(t + 0.001) > 0 ? 1 : -1));
+        if(Double.isInfinite(getNormalSlope(t))) return getY(t) + VelocityProfile.WHEELBASE / 2 * (left ? -1 : 1) * (t - 0.001 > 0 ? (getdx(t - 0.001) > 0 ? -1 : 1) : (getdx(t + 0.001) > 0 ? -1 : 1));
         return getY(t) + getNormalSlope(t) * (VelocityProfile.WHEELBASE / 2) * Math.sqrt(1 / (Math.pow(getNormalSlope(t), 2) + 1)) * (left ? -1 : 1) * (getdy(t) > 0 ? 1 : -1);
     }
     public double getNormalSlope(double t) {

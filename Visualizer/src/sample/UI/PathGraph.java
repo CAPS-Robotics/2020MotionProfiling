@@ -46,7 +46,7 @@ public class PathGraph {
         graph.setMaxHeight(graphHeight);
         graph.setPrefHeight(graphHeight);
         graph.setCreateSymbols(false);
-        graph.setLegendVisible(false);
+        graph.setLegendVisible(true);
         graph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
 
         pathDistance = new Label("Path Distance: ");
@@ -110,7 +110,9 @@ public class PathGraph {
             for (Spline spline : path) {
                 series = new XYChart.Series<>();
                 leftSeries = new XYChart.Series<>();
+                leftSeries.setName("left");
                 rightSeries = new XYChart.Series<>();
+                rightSeries.setName("right");
                 for (double t = 0; t <= 1; t += 0.001) {
                     series.getData().add(new XYChart.Data<>(spline.getX(t), spline.getY(t)));
                     leftSeries.getData().add(new XYChart.Data<>(spline.getLeftPosX(t), spline.getLeftPosY(t)));
