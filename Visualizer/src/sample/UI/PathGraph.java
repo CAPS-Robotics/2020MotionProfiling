@@ -116,6 +116,7 @@ public class PathGraph {
                     leftSeries.getData().add(new XYChart.Data<>(spline.getLeftPosX(t), spline.getLeftPosY(t)));
                     rightSeries.getData().add(new XYChart.Data<>(spline.getRightPosX(t), spline.getRightPosY(t)));
                 }
+
                 graph.getData().add(series);
                 graph.getData().add(leftSeries);
                 graph.getData().add(rightSeries);

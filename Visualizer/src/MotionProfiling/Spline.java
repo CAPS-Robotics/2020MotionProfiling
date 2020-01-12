@@ -18,19 +18,30 @@ public class Spline {
     }
 
     public void calculateCoefficients() {
-        ax = -6 * x0 + 6 * x1 - 3 * Math.cos(Math.toRadians(theta0)) * scale - 3 * Math.cos(Math.toRadians(theta1)) * scale;
-        bx = 15 * x0 - 15 * x1 + 8 * Math.cos(Math.toRadians(theta0)) * scale + 7 * Math.cos(Math.toRadians(theta1)) * scale;
-        cx = -10 * x0 + 10 * x1 - 6 * Math.cos(Math.toRadians(theta0)) * scale - 4 * Math.cos(Math.toRadians(theta1)) * scale;
-        dx = 0;
-        ex = Math.cos(Math.toRadians(theta0)) * scale;
-        fx = x0;
+        ax = checkZero(-6 * x0 + 6d * x1 - 3d * Math.cos(Math.toRadians(theta0)) * scale - 3d * Math.cos(Math.toRadians(theta1)) * scale);
+        bx = checkZero(15d * x0 - 15d * x1 + 8d * Math.cos(Math.toRadians(theta0)) * scale + 7d * Math.cos(Math.toRadians(theta1)) * scale);
+        cx = checkZero(-10d * x0 + 10d * x1 - 6d * Math.cos(Math.toRadians(theta0)) * scale - 4d * Math.cos(Math.toRadians(theta1)) * scale);
+        dx = 0d;
+        ex = checkZero(Math.cos(Math.toRadians(theta0)) * scale);
+        fx = checkZero(x0);
 
-        ay = -6 * y0 + 6 * y1 - 3 * Math.sin(Math.toRadians(theta0)) * scale - 3 * Math.sin(Math.toRadians(theta1)) * scale;
-        by = 15 * y0 - 15 * y1 + 8 * Math.sin(Math.toRadians(theta0)) * scale + 7 * Math.sin(Math.toRadians(theta1)) * scale;
-        cy = -10 * y0 + 10 * y1 - 6 * Math.sin(Math.toRadians(theta0)) * scale - 4 * Math.sin(Math.toRadians(theta1)) * scale;
-        dy = 0;
-        ey = Math.sin(Math.toRadians(theta0)) * scale;
-        fy = y0;
+        ay = checkZero(-6 * y0 + 6 * y1 - 3 * Math.sin(Math.toRadians(theta0)) * scale - 3 * Math.sin(Math.toRadians(theta1)) * scale);
+        by = checkZero(15 * y0 - 15 * y1 + 8 * Math.sin(Math.toRadians(theta0)) * scale + 7 * Math.sin(Math.toRadians(theta1)) * scale);
+        cy = checkZero(-10 * y0 + 10 * y1 - 6 * Math.sin(Math.toRadians(theta0)) * scale - 4 * Math.sin(Math.toRadians(theta1)) * scale);
+        dy = 0d;
+        ey = checkZero(Math.sin(Math.toRadians(theta0)) * scale);
+        fy = checkZero(y0);
+
+        //System.out.println(ax + ", " + bx + ", " + cx + ", " + dx + ", " + ex + ", " + fx);
+        //System.out.println(ay + ", " + by + ", " + cy + ", " + dy + ", " + ey + ", " + fy);
+        System.out.println(getdy(0.001));
+        System.out.println(getdx(0));
+        System.out.println();
+    }
+
+    private double checkZero(double d) {
+        if(d <= 1e-10 && d >= -1e-10) return 0;
+        return d;
     }
 
     public double getCurvatureSum() {
@@ -47,16 +58,16 @@ public class Spline {
     public double getRightPosY(double t) { return getYOffsetPos(t, false); }
 
     private double getXOffsetPos(double t, boolean left) {
-        if(getNormalSlope(t, left) > -0.01 && getNormalSlope(t, left) < 0.01) return getX(t) + VelocityProfile.WHEELBASE / 2 * (left ? -1 : 1);
-        return getX(t) + Math.sqrt(Math.pow(VelocityProfile.WHEELBASE / 2, 2) / (Math.pow(getNormalSlope(t, left), 2) + 1)) * (left ? -1 : 1);
+        return getX(t) + (Math.sqrt(Math.pow(VelocityProfile.WHEELBASE / 2, 2) - Math.pow(getYOffsetPos(t, left) - getY(t), 2))) * (left ? -1 : 1) * (getdy(t) > 0 ? 1 : -1);
     }
     private double getYOffsetPos(double t, boolean left) {
-        if(getNormalSlope(t, left) > -0.01 && getNormalSlope(t, left) < 0.01) return getY(t);
-        return getY(t) + getNormalSlope(t, left) * (getXOffsetPos(t, left) - getX(t)) * (left ? -1 : 1);
+        if(Double.isInfinite(getNormalSlope(t))) return getY(t) + VelocityProfile.WHEELBASE / 2 * (left ? -1 : 1) * (t - 0.001 > 0 ? (getdy(t - 0.001) > 0 ? 1 : -1) : (getdy(t + 0.001) > 0 ? 1 : -1));
+        return getY(t) + getNormalSlope(t) * (VelocityProfile.WHEELBASE / 2) * Math.sqrt(1 / (Math.pow(getNormalSlope(t), 2) + 1)) * (left ? -1 : 1) * (getdy(t) > 0 ? 1 : -1);
     }
-    private double getNormalSlope(double t, boolean left) {
-        if(getdy(t) == 0) return 999 * (left ? -1 : 1);
-        return -1 * getdx(t) / getdy(t);
+    public double getNormalSlope(double t) {
+        if(getdydx(t) == 0) return Double.POSITIVE_INFINITY;
+        if(Double.isInfinite(getdydx(t))) return 0;
+        return -1 / getdydx(t);
     }
 
     public double getX(double t) {
@@ -67,6 +78,10 @@ public class Spline {
     }
     public double getdx(double t) {
         return 5 * ax * Math.pow(t, 4) + 4 * bx * Math.pow(t, 3) + 3 * cx * Math.pow(t, 2) + 2 * dx * Math.pow(t, 1) + ex;
+    }
+    public double getdydx(double t) {
+        if(getdx(t) == 0) return Double.POSITIVE_INFINITY;
+        return getdy(t) / getdx(t);
     }
     public double getdy(double t) {
         return 5 * ay * Math.pow(t, 4) + 4 * by * Math.pow(t, 3) + 3 * cy * Math.pow(t, 2) + 2 * dy * Math.pow(t, 1) + ey;
