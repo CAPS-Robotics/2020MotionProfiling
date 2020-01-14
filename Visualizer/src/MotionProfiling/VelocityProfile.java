@@ -40,19 +40,23 @@ public class VelocityProfile {
         velocities = new ArrayList<>();
 
         double distance = 0;
+        double leftDistance = 0;
+        double rightDistance = 0;
         double time = 0;
-        double pLeftVelocity = 0;
-        double pRightVelocity = 0;
         double pVelocity = 0;
 
         for(Spline spline : path) {
-            for(double t = 0; t <= 1; t += 0.01) {
-                double dDistance = Math.sqrt(Math.pow(spline.getdx(t), 2) + Math.pow(spline.getdy(t), 2)) * 0.01;
-                double maxVelocity = Math.sqrt(Math.pow(pVelocity, 2) + 2 * MAX_ACCELERATION * dDistance);
-                double velocity = Math.min(MAX_VELOCITY, maxVelocity);
+            for(double t = 0; t <= 1; t += 0.001) {
+                double dDistance = Math.sqrt(Math.pow(spline.getdx(t), 2) + Math.pow(spline.getdy(t), 2)) * 0.001;
+                double dLeftDistance = Math.sqrt((Math.pow((spline.getLeftPosY(t) - spline.getLeftPosY(t + 0.001)) / (spline.getLeftPosX(t) - spline.getLeftPosX(t + 0.001)), 2) + 1)) * Math.abs(spline.getLeftPosX(t) - spline.getLeftPosX(t + 0.001));
+                double dRightDistance = Math.sqrt((Math.pow((spline.getRightPosY(t) - spline.getRightPosY(t + 0.001)) / (spline.getRightPosX(t) - spline.getRightPosX(t + 0.001)), 2) + 1)) * Math.abs(spline.getRightPosX(t) - spline.getRightPosX(t + 0.001));
+                double currentMaxVelocity = Math.sqrt(Math.pow(pVelocity, 2) + 2 * MAX_ACCELERATION * dDistance);
+                double velocity = Math.min(MAX_VELOCITY, currentMaxVelocity);
                 double dTime = dDistance / velocity;
 
                 distance += dDistance;
+                leftDistance += dLeftDistance;
+                rightDistance += dRightDistance;
                 time += dTime;
                 pVelocity = velocity;
 

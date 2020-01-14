@@ -46,7 +46,7 @@ public class PathGraph {
         graph.setMaxHeight(graphHeight);
         graph.setPrefHeight(graphHeight);
         graph.setCreateSymbols(false);
-        graph.setLegendVisible(true);
+        graph.setLegendVisible(false);
         graph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
 
         pathDistance = new Label("Path Distance: ");

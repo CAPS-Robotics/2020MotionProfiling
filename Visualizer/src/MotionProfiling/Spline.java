@@ -58,6 +58,7 @@ public class Spline {
         if(Double.isInfinite(getNormalSlope(t))) return getY(t) + VelocityProfile.WHEELBASE / 2 * (left ? -1 : 1) * (t - 0.001 > 0 ? (getdx(t - 0.001) > 0 ? -1 : 1) : (getdx(t + 0.001) > 0 ? -1 : 1));
         return getY(t) + getNormalSlope(t) * (VelocityProfile.WHEELBASE / 2) * Math.sqrt(1 / (Math.pow(getNormalSlope(t), 2) + 1)) * (left ? -1 : 1) * (getdy(t) > 0 ? 1 : -1);
     }
+
     public double getNormalSlope(double t) {
         if(getdydx(t) == 0) return Double.POSITIVE_INFINITY;
         if(Double.isInfinite(getdydx(t))) return 0;
