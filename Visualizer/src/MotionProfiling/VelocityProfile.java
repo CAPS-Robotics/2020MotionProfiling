@@ -56,6 +56,10 @@ public class VelocityProfile {
                     double maxRightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
                     rightVelocity = Math.min(MAX_VELOCITY, maxRightVelocity);
                     leftVelocity = calcInnerWheelVelocity(rightVelocity, spline.getCurvature(t));
+                    if(leftVelocity > calcMaxVelocity(pLeftVelocity, dLeftDistance)) {
+                        leftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
+                        rightVelocity = calcOuterWheelVelocity(leftVelocity, spline.getCurvature(t));
+                    }
                 } else if (spline.getCurvature(t) > 0 && spline.getdx(t) < 0 || spline.getCurvature(t) < 0 && spline.getdx(t) > 0) {
                     double maxLeftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
                     leftVelocity = Math.min(MAX_VELOCITY, maxLeftVelocity);
@@ -93,6 +97,10 @@ public class VelocityProfile {
     private static double calcInnerWheelVelocity(double outerVelocity, double curvature) {
         double turningRadius = Math.abs(1 / curvature);
         return (2 * turningRadius * outerVelocity - WHEELBASE * outerVelocity) / (2 * turningRadius + WHEELBASE);
+    }
+    private static double calcOuterWheelVelocity(double innerVelocity, double curvature) {
+        double turningRadius = Math.abs(1 / curvature);
+        return (2 * turningRadius * innerVelocity + WHEELBASE * innerVelocity) / (2 * turningRadius - WHEELBASE);
     }
 
     public static ArrayList<Double> getTimes() { return times; }
