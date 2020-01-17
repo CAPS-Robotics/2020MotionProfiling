@@ -40,10 +40,7 @@ public class VelocityProfile {
         velocities = new ArrayList<>();
 
         double distance = 0;
-        double leftDistance = 0;
-        double rightDistance = 0;
         double time = 0;
-        double pVelocity = 0;
         double pLeftVelocity = 0;
         double pRightVelocity = 0;
 
@@ -58,11 +55,11 @@ public class VelocityProfile {
                 if(spline.getCurvature(t) > 0 && spline.getdx(t) > 0 || spline.getCurvature(t) < 0 && spline.getdx(t) < 0) {
                     double maxRightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
                     rightVelocity = Math.min(MAX_VELOCITY, maxRightVelocity);
-                    leftVelocity = calcInnerWheelVelocity(pVelocity, rightVelocity, spline.getCurvature(t));
+                    leftVelocity = calcInnerWheelVelocity(rightVelocity, spline.getCurvature(t));
                 } else if (spline.getCurvature(t) > 0 && spline.getdx(t) < 0 || spline.getCurvature(t) < 0 && spline.getdx(t) > 0) {
                     double maxLeftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
                     leftVelocity = Math.min(MAX_VELOCITY, maxLeftVelocity);
-                    rightVelocity = calcInnerWheelVelocity(pVelocity, leftVelocity, spline.getCurvature(t));
+                    rightVelocity = calcInnerWheelVelocity(leftVelocity, spline.getCurvature(t));
                 } else{
                     double maxLeftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
                     double maxRightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
@@ -74,13 +71,10 @@ public class VelocityProfile {
                 double velocity = (leftVelocity + rightVelocity) / 2;
                 double dTime = dDistance / velocity;
 
-                pVelocity = velocity;
                 pLeftVelocity = leftVelocity;
                 pRightVelocity = rightVelocity;
 
                 distance += dDistance;
-                leftDistance += dLeftDistance;
-                rightDistance += dRightDistance;
                 time += dTime;
 
                 times.add(time);
@@ -96,10 +90,9 @@ public class VelocityProfile {
     private static double calcMaxVelocity(double pVelocity, double distance) {
         return Math.sqrt(Math.pow(pVelocity, 2) + 2 * MAX_ACCELERATION * distance);
     }
-    private static double calcInnerWheelVelocity(double robotVelocity, double outerVelocity, double curvature) {
+    private static double calcInnerWheelVelocity(double outerVelocity, double curvature) {
         double turningRadius = Math.abs(1 / curvature);
-        double angularVelocity = robotVelocity / turningRadius;
-        return Math.abs(turningRadius * angularVelocity - outerVelocity);
+        return (2 * turningRadius * outerVelocity - WHEELBASE * outerVelocity) / (2 * turningRadius + WHEELBASE);
     }
 
     public static ArrayList<Double> getTimes() { return times; }
