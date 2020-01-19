@@ -38,14 +38,6 @@ public class Spline {
         return d;
     }
 
-    public double getCurvatureSum() {
-        double sum = 0;
-        for(double t = 0; t <= 1; t += 0.01) {
-            sum += getCurvature(t);
-        }
-        return sum;
-    }
-
     public double getLeftPosX(double t) { return getXOffsetPos(t, true); }
     public double getLeftPosY(double t) { return getYOffsetPos(t, true); }
     public double getRightPosX(double t) { return getXOffsetPos(t, false); }
@@ -74,20 +66,31 @@ public class Spline {
     public double getdx(double t) {
         return 5 * ax * Math.pow(t, 4) + 4 * bx * Math.pow(t, 3) + 3 * cx * Math.pow(t, 2) + 2 * dx * Math.pow(t, 1) + ex;
     }
-    public double getdydx(double t) {
-        if(getdx(t) == 0) return Double.POSITIVE_INFINITY;
-        return getdy(t) / getdx(t);
+    public double getddx(double t) {
+        return 20 * ax * Math.pow(t, 3) + 12 * bx * Math.pow(t, 2) + 6 * cx * Math.pow(t, 1) + 2 * dx;
     }
     public double getdy(double t) {
         return 5 * ay * Math.pow(t, 4) + 4 * by * Math.pow(t, 3) + 3 * cy * Math.pow(t, 2) + 2 * dy * Math.pow(t, 1) + ey;
     }
-    public double getddx(double t) {
-        return 20 * ax * Math.pow(t, 3) + 12 * bx * Math.pow(t, 2) + 6 * cx * Math.pow(t, 1) + 2 * dx;
-    }
+
     public double getddy(double t) {
         return 20 * ay * Math.pow(t, 3) + 12 * by * Math.pow(t, 2) + 6 * cy * Math.pow(t, 1) + 2 * dy;
     }
+    public double getdydx(double t) {
+        if(getdx(t) == 0) return Double.POSITIVE_INFINITY;
+        return getdy(t) / getdx(t);
+    }
+    public double getd2ydx2(double t) {
+        return (getdx(t) * getddy(t) - getdy(t) * getddx(t)) / Math.pow(getdx(t), 3);
+    }
     public double getCurvature(double t) {
         return (getdx(t) * getddy(t) - getdy(t) * getddx(t)) / Math.pow(Math.pow(getdx(t), 2) + Math.pow(getdy(t), 2), 1.5);
+    }
+    public double getCurvatureSum() {
+        double sum = 0;
+        for(double t = 0; t <= 1; t += 0.01) {
+            sum += getCurvature(t);
+        }
+        return sum;
     }
 }
