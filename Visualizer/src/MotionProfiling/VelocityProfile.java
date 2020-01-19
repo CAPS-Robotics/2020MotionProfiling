@@ -53,17 +53,19 @@ public class VelocityProfile {
                 double leftVelocity;
                 double rightVelocity;
                 if(spline.getdx(t) > 0 && spline.getd2ydx2(t) > 0 || spline.getdx(t) < 0 && spline.getd2ydx2(t) < 0) {
-                    double maxRightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
-                    rightVelocity = Math.min(MAX_VELOCITY, maxRightVelocity);
+                    rightVelocity = Math.min(MAX_VELOCITY, calcMaxVelocity(pRightVelocity, dRightDistance));
                     leftVelocity = calcInnerWheelVelocity(rightVelocity, spline.getCurvature(t));
                     if(leftVelocity > calcMaxVelocity(pLeftVelocity, dLeftDistance)) {
                         leftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
                         rightVelocity = calcOuterWheelVelocity(leftVelocity, spline.getCurvature(t));
                     }
                 } else if (spline.getdx(t) < 0 && spline.getd2ydx2(t) > 0 || spline.getdx(t) > 0 && spline.getd2ydx2(t) < 0) {
-                    double maxLeftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
-                    leftVelocity = Math.min(MAX_VELOCITY, maxLeftVelocity);
+                    leftVelocity = Math.min(MAX_VELOCITY, calcMaxVelocity(pLeftVelocity, dLeftDistance));
                     rightVelocity = calcInnerWheelVelocity(leftVelocity, spline.getCurvature(t));
+                    if(rightVelocity > calcMaxVelocity(pRightVelocity, dRightDistance)) {
+                        rightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
+                        leftVelocity = calcOuterWheelVelocity(rightVelocity, spline.getCurvature(t));
+                    }
                 } else {
                     double maxLeftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
                     double maxRightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
