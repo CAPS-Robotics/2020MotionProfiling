@@ -3,23 +3,36 @@ package MotionProfiling;
 import java.util.ArrayList;
 
 public class VelocityProfile {
-    public static final double MAX_VELOCITY = 14.33;
-    public static final double MAX_ACCELERATION = 9;
-    public static final double WHEELBASE = 3;
+    public static final double MAX_VELOCITY = 17.9;
+    public static final double MAX_ACCELERATION = 12;
+    public static final double WHEELBASE = 1.75;
 
     private static ArrayList<Spline> path = new ArrayList<>();
 
     private static double pathDistance;
     private static double leftPathDistance;
     private static double rightPathDistance;
+
     private static double pathTime;
+
+    private static double currentLeftVelocity;
+    private static double currentRightVelocity;
+    private static double currentAngle;
+
+    private static int index = 1;
 
     private static ArrayList<Double> times;
     private static ArrayList<Double> leftVelocities;
     private static ArrayList<Double> rightVelocities;
     private static ArrayList<Double> velocities;
+    private static ArrayList<Double> angles;
 
-    public static void setPath(ArrayList<Spline> motionPath) { path = motionPath; }
+    public static void setPath(ArrayList<Spline> motionPath) {
+        path = motionPath;
+        calculateDistance();
+        calculateVelocities();
+        index = 1;
+    }
 
     public static void calculateDistance() {
         double distance = 0;
@@ -46,6 +59,7 @@ public class VelocityProfile {
         leftVelocities = new ArrayList<>();
         rightVelocities = new ArrayList<>();
         velocities = new ArrayList<>();
+        angles = new ArrayList<>();
 
         double leftDistance = 0;
         double rightDistance = 0;
@@ -114,10 +128,24 @@ public class VelocityProfile {
                 velocities.add(velocity);
                 leftVelocities.add(leftVelocity);
                 rightVelocities.add(rightVelocity);
+                angles.add(spline.getAngle(t));
             }
         }
         pathTime = time;
     }
+
+    public static void calculateCurrentVelocities(double time) {
+        while (times.get(index) < time && index < 999) index++;
+        double leftSlope = (leftVelocities.get(index) - leftVelocities.get(index - 1)) / (times.get(index) - times.get(index - 1));
+        double rightSlope = (rightVelocities.get(index) - rightVelocities.get(index - 1)) / (times.get(index) - times.get(index - 1));
+
+        currentLeftVelocity = (time - times.get(index - 1)) * leftSlope + leftVelocities.get(index - 1);
+        currentRightVelocity = (time - times.get(index - 1)) * rightSlope + rightVelocities.get(index - 1);
+        currentAngle = angles.get(index);
+    }
+    public static double getCurrentLeftVelocity() { return currentLeftVelocity; }
+    public static double getCurrentRightVelocity() { return currentRightVelocity; }
+    public static double getCurrentAngle() { return currentAngle; }
 
     private static double calcMaxVelocity(double pVelocity, double distance) {
         return Math.sqrt(Math.pow(pVelocity, 2) + 2 * MAX_ACCELERATION * distance);
