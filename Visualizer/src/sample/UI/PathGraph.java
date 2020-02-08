@@ -81,7 +81,7 @@ public class PathGraph {
                 double theta1 = p1.getTheta();
                 if(isDataOutOfRange(x1, y1, theta1)) throw new Exception(String.valueOf(p1.getPos()));
 
-                path.add(new Spline(x0, y0, x1, y1, 90-theta0, 90-theta1));
+                path.add(new Spline(x0, y0, x1, y1, theta0, theta1));
             } catch (NumberFormatException e) {
                 DataEntry.setErrorMessage("Invalid data at point " + e.getMessage());
                 badData = true;
@@ -127,7 +127,7 @@ public class PathGraph {
     }
 
     private static boolean isDataOutOfRange(double x, double y, double theta) {
-        return x < 0 || x > 55 || y < 0 || y > 28.5 || theta < -180 || theta > 180;
+        return x < 0 || x > 28.5 || y < 0 || y > 55 || theta < -180 || theta > 180;
     }
 
     public static HBox getUIElement() { return hbox; }

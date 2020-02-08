@@ -1,5 +1,6 @@
 package sample.UI;
 
+import MotionProfiling.Spline;
 import MotionProfiling.VelocityProfile;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -55,6 +56,7 @@ public class MotionGraph {
         ArrayList<Double> velocities = VelocityProfile.getVelocities();
 
         XYChart.Series robotData = new XYChart.Series();
+        XYChart.Series testSeries = new XYChart.Series();
         XYChart.Series leftData =  new XYChart.Series();
         XYChart.Series rightData = new XYChart.Series();
 
@@ -63,17 +65,28 @@ public class MotionGraph {
 
         for(int i = 0; i < times.size(); i++) {
             double time = times.get(i);
-            robotData.getData().add(new XYChart.Data<Number, Number>(time, velocities.get(i)));
+            //robotData.getData().add(new XYChart.Data<Number, Number>(time, velocities.get(i)));
         }
+
+        double dydx = 0;
+        for(Spline spline : VelocityProfile.getPath()) {
+            for(int t = 1; t < times.size(); t++) {
+                robotData.getData().add(new XYChart.Data<Number, Number>(times.get(t), t));
+                Spline spline1 = new Spline(times.get(t - 1), t - 1, times.get(t), t, dydx, 1 / (times.get(t) - times.get(t - 1)));
+                dydx = spline1.getdydx(0);
+                testSeries.getData().add(new XYChart.Data<Number, Number>(spline1.getX(1 / times.size()), t));
+            }
+        }
+
         for(double time = 0; time < VelocityProfile.getPathTime(); time += 0.005) {
             VelocityProfile.calculateCurrentVelocities(time);
             leftData.getData().add(new XYChart.Data<Number, Number>(time, VelocityProfile.getCurrentLeftVelocity()));
             rightData.getData().add(new XYChart.Data<Number, Number>(time, VelocityProfile.getCurrentRightVelocity()));
-            System.out.println(VelocityProfile.getCurrentAngle());
         }
 
         robotVelocityGraph.getData().clear();
         robotVelocityGraph.getData().add(robotData);
+        robotVelocityGraph.getData().add(testSeries);
 
         motorVelocityGraph.getData().clear();
         motorVelocityGraph.getData().add(leftData);
