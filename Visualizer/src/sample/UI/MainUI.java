@@ -2,6 +2,7 @@ package sample.UI;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -21,12 +22,13 @@ public class MainUI {
         PathGraph.initializeGraph();
         DataEntry.initializeDataEntry();
 
-        VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10, 0, 0, 0));
-        vBox.getChildren().add(PathGraph.getUIElement());
-        vBox.getChildren().add(DataEntry.getUIElement());
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(10, 0, 0, 0));
+        hBox.getChildren().add(PathGraph.getUIElement());
+        hBox.getChildren().add(DataEntry.getUIElement());
+        hBox.setPadding(new Insets(20));
 
-        Scene scene = new Scene(vBox, stage.getWidth(), stage.getHeight());
+        Scene scene = new Scene(hBox, stage.getWidth(), stage.getHeight());
         scene.getStylesheets().add("Styling/style.css");
 
         stage.setScene(scene);

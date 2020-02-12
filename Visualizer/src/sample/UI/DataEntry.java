@@ -8,10 +8,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class DataEntry {
-    private static final int maxPoints = 10;
+    private static final int maxPoints = 7;
     private static ArrayList<DataTemplate> points;
     private static VBox vbox;
     private static HBox hbox;
@@ -36,7 +37,7 @@ public class DataEntry {
 
         HBox buttonHbox = new HBox();
         buttonHbox.setPadding(new Insets(0));
-        buttonHbox.setSpacing(MainUI.screenWidth - 400);
+        buttonHbox.setSpacing(20);
         buttonHbox.getChildren().add(graphButton);
         buttonHbox.getChildren().add(openProfiling);
 
@@ -113,7 +114,7 @@ public class DataEntry {
         DataTemplate(int position) {
             pos = position;
 
-            paneWidth = (MainUI.screenWidth - ((maxPoints + 2) * 20)) / maxPoints;
+            paneWidth = ((MainUI.screenWidth - PathGraph.getUIElement().getWidth()) - ((maxPoints + 5) * 20)) / maxPoints;
 
             x = new TextField();
             y = new TextField();

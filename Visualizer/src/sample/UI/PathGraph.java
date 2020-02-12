@@ -4,11 +4,10 @@ import MotionProfiling.Spline;
 import MotionProfiling.VelocityProfile;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 
+import javax.sound.sampled.Line;
 import java.util.ArrayList;
 
 public class PathGraph {
@@ -20,22 +19,22 @@ public class PathGraph {
     private static Label pathTime;
 
     public static void initializeGraph() {
-        double xLength = 52.4375 / 1674 * 1826;
-        double yHeight = 26.9375 / 861 * 958;
+        double xLength = 26.9375 / 861 * 958;
+        double yHeight = 52.4375 / 1674 * 1826;
 
-        NumberAxis x = new NumberAxis("", 0, xLength, 1);
-        double xHeight = 20;
+        NumberAxis x = new NumberAxis("", -xLength / 2, xLength / 2, 1);
+        double xHeight = 40;
         x.setPrefHeight(xHeight);
         x.setMinHeight(xHeight);
         x.setMaxHeight(xHeight);
 
         NumberAxis y = new NumberAxis("",0, yHeight, 1);
-        double yWidth = 40;
+        double yWidth = xLength / yHeight * xHeight;
         y.setPrefWidth(yWidth);
         y.setMinWidth(yWidth);
         y.setMaxWidth(yWidth);
 
-        double graphHeight = 0.80 * MainUI.screenHeight;
+        double graphHeight = 0.90 * MainUI.screenHeight;
         double graphWidth = xLength / yHeight * graphHeight;
 
         graph = new LineChart<>(x, y);
@@ -48,19 +47,6 @@ public class PathGraph {
         graph.setCreateSymbols(false);
         graph.setLegendVisible(false);
         graph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
-
-        pathDistance = new Label("Path Distance: ");
-        pathTime = new Label("Path Time: ");
-
-        VBox vbox = new VBox();
-        vbox.getChildren().add(pathDistance);
-        vbox.getChildren().add(pathTime);
-        vbox.setSpacing(20);
-
-        hbox = new HBox();
-        hbox.getChildren().add(graph);
-        hbox.getChildren().add(vbox);
-        hbox.setSpacing((MainUI.screenWidth - graphWidth) / 2 - 50);
     }
 
     public static void graphData(ArrayList<DataEntry.DataTemplate> points) {
@@ -96,8 +82,8 @@ public class PathGraph {
 
             VelocityProfile.setPath(path);
 
-            pathDistance.setText(String.format("Path Distance: %.3f %n", VelocityProfile.getPathDistance()));
-            pathTime.setText(String.format("Path Time: %.3f %n", VelocityProfile.getPathTime()));
+            //pathDistance.setText(String.format("Path Distance: %.3f %n", VelocityProfile.getPathDistance()));
+            //pathTime.setText(String.format("Path Time: %.3f %n", VelocityProfile.getPathTime()));
             DataEntry.removeErrorMessage();
             graph.getData().clear();
 
@@ -125,8 +111,8 @@ public class PathGraph {
     }
 
     private static boolean isDataOutOfRange(double x, double y, double theta) {
-        return x < 0 || x > 28.5 || y < 0 || y > 55 || theta < -180 || theta > 180;
+        return x < -15 || x > 15 || y < 0 || y > 55 || theta < -180 || theta > 180;
     }
 
-    public static HBox getUIElement() { return hbox; }
+    public static LineChart getUIElement() { return graph; }
 }
