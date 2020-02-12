@@ -95,8 +95,6 @@ public class PathGraph {
             DataEntry.enableProfiling();
 
             VelocityProfile.setPath(path);
-            VelocityProfile.calculateDistance();
-            VelocityProfile.calculateVelocities();
 
             pathDistance.setText(String.format("Path Distance: %.3f %n", VelocityProfile.getPathDistance()));
             pathTime.setText(String.format("Path Time: %.3f %n", VelocityProfile.getPathTime()));

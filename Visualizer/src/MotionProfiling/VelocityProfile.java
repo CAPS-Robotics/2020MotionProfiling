@@ -6,7 +6,7 @@ public class VelocityProfile {
     public static final double MAX_VELOCITY = 17.9;
     public static final double MAX_ACCELERATION = 12;
     public static final double WHEELBASE = 1.75;
-    public static final double dt = 0.005;
+    public static final double dt = 0.001;
 
     private static ArrayList<Spline> path = new ArrayList<>();
 
