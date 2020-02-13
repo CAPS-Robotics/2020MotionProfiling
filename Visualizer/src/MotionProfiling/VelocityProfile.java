@@ -130,6 +130,8 @@ public class VelocityProfile {
                 leftVelocities.add(leftVelocity);
                 rightVelocities.add(rightVelocity);
                 angles.add(spline.getAngle(t));
+
+                System.out.println(spline.getAngle(t));
             }
         }
         pathTime = time;
