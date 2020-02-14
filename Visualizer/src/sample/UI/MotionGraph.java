@@ -69,14 +69,14 @@ public class MotionGraph {
         }
 
         double dydx = 0;
-        for(Spline spline : VelocityProfile.getPath()) {
+        /*for(Spline spline : VelocityProfile.getPath()) {
             for(int t = 1; t < times.size(); t++) {
                 robotData.getData().add(new XYChart.Data<Number, Number>(times.get(t), t));
                 Spline spline1 = new Spline(times.get(t - 1), t - 1, times.get(t), t, dydx, 1 / (times.get(t) - times.get(t - 1)));
                 dydx = spline1.getdydx(0);
                 testSeries.getData().add(new XYChart.Data<Number, Number>(spline1.getX(1 / times.size()), t));
             }
-        }
+        }*/
 
         for(double time = 0; time < VelocityProfile.getPathTime(); time += 0.005) {
             VelocityProfile.calculateCurrentVelocities(time);

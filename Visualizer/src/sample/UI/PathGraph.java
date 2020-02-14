@@ -1,13 +1,12 @@
 package sample.UI;
 
+import MotionProfiling.Point;
 import MotionProfiling.Spline;
 import MotionProfiling.VelocityProfile;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
-import javax.sound.sampled.Line;
 import java.util.ArrayList;
 
 public class PathGraph {
@@ -50,24 +49,14 @@ public class PathGraph {
     }
 
     public static void graphData(ArrayList<DataEntry.DataTemplate> points) {
-        ArrayList<Spline> path = new ArrayList<>();
         boolean badData = false;
+        VelocityProfile.reset();
 
-        for (int i = 0; i < points.size() - 1; i++) {
+        for (int i = 0; i < points.size(); i++) {
             try {
-                DataEntry.DataTemplate p0 = points.get(i);
-                double x0 = p0.getX();
-                double y0 = p0.getY();
-                double theta0 = p0.getTheta();
-                if(isDataOutOfRange(x0, y0, theta0)) throw new Exception(String.valueOf(p0.getPos()));
-
-                DataEntry.DataTemplate p1 = points.get(i + 1);
-                double x1 = p1.getX();
-                double y1 = p1.getY();
-                double theta1 = p1.getTheta();
-                if(isDataOutOfRange(x1, y1, theta1)) throw new Exception(String.valueOf(p1.getPos()));
-
-                path.add(new Spline(x0, y0, x1, y1, theta0, theta1));
+                DataEntry.DataTemplate p = points.get(i);
+                VelocityProfile.addWaypoint(new Point(p.getX(), p.getY(), p.getTheta()));
+                if(isDataOutOfRange(p.getX(), p.getY(), p.getTheta())) throw new Exception(String.valueOf(p.getPos()));
             } catch (NumberFormatException e) {
                 DataEntry.setErrorMessage("Invalid data at point " + e.getMessage());
                 badData = true;
@@ -80,7 +69,7 @@ public class PathGraph {
         if(!badData) {
             DataEntry.enableProfiling();
 
-            VelocityProfile.setPath(path);
+            VelocityProfile.generatePath();
 
             //pathDistance.setText(String.format("Path Distance: %.3f %n", VelocityProfile.getPathDistance()));
             //pathTime.setText(String.format("Path Time: %.3f %n", VelocityProfile.getPathTime()));
@@ -91,7 +80,7 @@ public class PathGraph {
             XYChart.Series<Number, Number> leftSeries;
             XYChart.Series<Number, Number> rightSeries;
 
-            for (Spline spline : path) {
+            for (Spline spline : VelocityProfile.getPath()) {
                 series = new XYChart.Series<>();
                 leftSeries = new XYChart.Series<>();
                 leftSeries.setName("left");
