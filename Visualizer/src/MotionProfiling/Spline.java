@@ -87,11 +87,12 @@ public class Spline {
         return (getdx(t) * getddy(t) - getdy(t) * getddx(t)) / Math.pow(Math.pow(getdx(t), 2) + Math.pow(getdy(t), 2), 1.5);
     }
     public double getAngle(double t) {
-        double angle = Math.toDegrees(Math.atan(getdydx(t))) * -1 + 90;
+        double angle = Math.toDegrees(Math.atan(getdydx(t)));
+        angle = angle > 0 ? 90 - angle : (90 + angle) * -1;
         if(getdx(t) > 0 && getdy(t) < 0) {
-            return Math.abs(angle);
+            return 180 - Math.abs(angle);
         } else if(getdx(t) < 0 && getdy(t) < 0) {
-            return -90 - Math.abs(angle);
+            return -180 + Math.abs(angle);
         }
 
         return angle;
