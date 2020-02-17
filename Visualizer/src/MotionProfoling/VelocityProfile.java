@@ -1,4 +1,4 @@
-package MotionProfiling;
+package MotionProfoling;
 
 import java.util.ArrayList;
 
@@ -22,6 +22,7 @@ public class VelocityProfile {
     private static double currentAngle;
 
     private static int index = 1;
+    private static boolean backwards;
 
     private static ArrayList<Double> times;
     private static ArrayList<Double> leftVelocities;
@@ -29,13 +30,14 @@ public class VelocityProfile {
     private static ArrayList<Double> velocities;
     private static ArrayList<Double> angles;
 
-    public static void generatePath() {
+    public static void generatePath(boolean isBackwards) {
+        backwards = isBackwards;
         setPath();
         calculateDistance();
         calculateVelocities();
     }
 
-    public static void addWaypoint(Point p) { points.add(p); }
+    public static void addWaypoint(double x, double y, double theta) { points.add(new Point(x, y, theta)); }
 
     private static void setPath() {
         for(int i = 0; i < points.size() - 1; i++) {
@@ -155,10 +157,18 @@ public class VelocityProfile {
         while (times.get(index) < time && index < ((1/dt) * path.size() - 1)) index++;
         double leftSlope = (leftVelocities.get(index) - leftVelocities.get(index - 1)) / (times.get(index) - times.get(index - 1));
         double rightSlope = (rightVelocities.get(index) - rightVelocities.get(index - 1)) / (times.get(index) - times.get(index - 1));
+        double angleSlope = (angles.get(index) - angles.get(index - 1)) / (times.get(index) - times.get(index - 1));
 
         currentLeftVelocity = (time - times.get(index - 1)) * leftSlope + leftVelocities.get(index - 1);
         currentRightVelocity = (time - times.get(index - 1)) * rightSlope + rightVelocities.get(index - 1);
-        currentAngle = angles.get(index);
+        currentAngle = (time - times.get(index - 1)) * angleSlope + angles.get(index - 1);
+
+        if(backwards) {
+            double temp = currentLeftVelocity;
+            currentLeftVelocity = -currentRightVelocity;
+            currentRightVelocity = -temp;
+            currentAngle += currentAngle > 0 ? -180 : 180;
+        }
     }
     public static double getCurrentLeftVelocity() { return currentLeftVelocity; }
     public static double getCurrentRightVelocity() { return currentRightVelocity; }

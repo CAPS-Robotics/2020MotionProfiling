@@ -1,4 +1,4 @@
-package MotionProfiling;
+package MotionProfoling;
 
 public class Spline {
     double x0, y0, x1, y1, theta0, theta1;

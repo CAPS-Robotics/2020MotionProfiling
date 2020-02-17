@@ -1,4 +1,4 @@
-package MotionProfiling;
+package MotionProfoling;
 
 public class Point {
     private double x, y, theta;
