@@ -1,4 +1,4 @@
-package MotionProfoling;
+package MotionProfiling;
 
 import java.util.ArrayList;
 
@@ -146,11 +146,10 @@ public class VelocityProfile {
                 leftVelocities.add(leftVelocity);
                 rightVelocities.add(rightVelocity);
                 angles.add(spline.getAngle(t));
-
-                System.out.println(spline.getAngle(t));
             }
         }
         pathTime = time;
+        System.out.println(pathTime);
     }
 
     public static void calculateCurrentVelocities(double time) {

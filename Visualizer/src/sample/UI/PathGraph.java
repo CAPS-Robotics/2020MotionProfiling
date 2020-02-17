@@ -55,7 +55,7 @@ public class PathGraph {
         for (int i = 0; i < points.size(); i++) {
             try {
                 DataEntry.DataTemplate p = points.get(i);
-                VelocityProfile.addWaypoint(new Point(p.getX(), p.getY(), p.getTheta()));
+                VelocityProfile.addWaypoint(p.getX(), p.getY(), p.getTheta());
                 if(isDataOutOfRange(p.getX(), p.getY(), p.getTheta())) throw new Exception(String.valueOf(p.getPos()));
             } catch (NumberFormatException e) {
                 DataEntry.setErrorMessage("Invalid data at point " + e.getMessage());
@@ -69,7 +69,7 @@ public class PathGraph {
         if(!badData) {
             DataEntry.enableProfiling();
 
-            VelocityProfile.generatePath();
+            VelocityProfile.generatePath(false);
 
             //pathDistance.setText(String.format("Path Distance: %.3f %n", VelocityProfile.getPathDistance()));
             //pathTime.setText(String.format("Path Time: %.3f %n", VelocityProfile.getPathTime()));

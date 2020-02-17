@@ -1,5 +1,7 @@
 package sample.UI;
 
+import MotionProfiling.CubicApproximation;
+import MotionProfiling.Point;
 import MotionProfiling.Spline;
 import MotionProfiling.VelocityProfile;
 import javafx.scene.chart.LineChart;
@@ -10,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javax.sound.sampled.Line;
 import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
+
 
 public class MotionGraph {
     private static LineChart robotVelocityGraph;
@@ -29,7 +32,7 @@ public class MotionGraph {
         robotVelocityGraph.setMinHeight(graphHeight);
         robotVelocityGraph.setMaxHeight(graphHeight);
         robotVelocityGraph.setCreateSymbols(false);
-        robotVelocityGraph.setLegendVisible(false);
+        robotVelocityGraph.setLegendVisible(true);
         robotVelocityGraph.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
 
         NumberAxis motorX = new NumberAxis();
@@ -51,21 +54,19 @@ public class MotionGraph {
 
     public static void graphData() {
         ArrayList<Double> times = VelocityProfile.getTimes();
-        ArrayList<Double> leftVelocities = VelocityProfile.getLeftVelocities();
-        ArrayList<Double> rightVelocities = VelocityProfile.getRightVelocities();
         ArrayList<Double> velocities = VelocityProfile.getVelocities();
 
         XYChart.Series robotData = new XYChart.Series();
-        XYChart.Series testSeries = new XYChart.Series();
         XYChart.Series leftData =  new XYChart.Series();
         XYChart.Series rightData = new XYChart.Series();
 
         leftData.setName("Left Motor");
         rightData.setName("Right Motor");
+        robotData.setName("Actual");
 
         for(int i = 0; i < times.size(); i++) {
             double time = times.get(i);
-            //robotData.getData().add(new XYChart.Data<Number, Number>(time, velocities.get(i)));
+            robotData.getData().add(new XYChart.Data<Number, Number>(time, velocities.get(i)));
         }
 
         double dydx = 0;
@@ -86,7 +87,6 @@ public class MotionGraph {
 
         robotVelocityGraph.getData().clear();
         robotVelocityGraph.getData().add(robotData);
-        robotVelocityGraph.getData().add(testSeries);
 
         motorVelocityGraph.getData().clear();
         motorVelocityGraph.getData().add(leftData);
