@@ -58,17 +58,13 @@ public class MotionGraph {
         rightData.setName("Right Motor");
         robotData.setName("Actual");
 
-        /*for(int i = 0; i < times.size(); i++) {
-            double time = times.get(i);
-            //robotData.getData().add(new XYChart.Data<Number, Number>(time, velocities.get(i)));
-            robotData.getData().add(new XYChart.Data<Number, Number>(VelocityProfile.getDistances().get(i), VelocityProfile.dt * i));
-            testData.getData().add(new XYChart.Data<Number, Number>(VelocityProfile.getDistances().get(i), VelocityProfile.getDistances().get(i) * m * VelocityProfile.getPath().size()));
-        }*/
-
         for(double distance = 0.1; distance < VelocityProfile.getPathDistance(); distance += 0.1) {
             VelocityProfile.calculateVelocities(distance);
-            leftData.getData().add(new XYChart.Data<Number, Number>(distance, VelocityProfile.getCurrentLeftVelocity()));
-            rightData.getData().add(new XYChart.Data<Number, Number>(distance, VelocityProfile.getCurrentRightVelocity()));
+            if(!Double.isNaN(VelocityProfile.getCurrentLeftVelocity()) && !Double.isNaN(VelocityProfile.getCurrentRightVelocity())) {
+                leftData.getData().add(new XYChart.Data<Number, Number>(distance, VelocityProfile.getCurrentLeftVelocity()));
+                rightData.getData().add(new XYChart.Data<Number, Number>(distance, VelocityProfile.getCurrentRightVelocity()));
+            } else {
+            }
         }
 
         robotVelocityGraph.getData().clear();
