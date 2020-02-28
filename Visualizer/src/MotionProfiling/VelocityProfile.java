@@ -15,8 +15,7 @@ public class VelocityProfile {
     private static double leftPathDistance;
     private static double rightPathDistance;
 
-    private static double pathTime;
-
+    private static double currentDistance;
     private static double currentLeftDistance;
     private static double currentRightDistance;
     private static double currentLeftVelocity;
@@ -25,7 +24,10 @@ public class VelocityProfile {
 
     private static double pLeftVelocity;
     private static double pRightVelocity;
+    private static double dLeftVelocity;
+    private static double dRightVelocity;
     public static double pT;
+    private static double pTime;
     private static boolean decelerating;
     private static int splineIndex;
 
@@ -51,9 +53,12 @@ public class VelocityProfile {
         approximations = new ArrayList<>();
         pLeftVelocity = 0;
         pRightVelocity = 0;
-        pT = 0;
+        pT = -0.01;
+        pTime = 0;
+        pathDistance = 0;
         decelerating = false;
         splineIndex = 0;
+        currentDistance = 0;
         currentLeftDistance = 0;
         currentRightDistance = 0;
     }
@@ -65,7 +70,7 @@ public class VelocityProfile {
 
         for(int i = 0; i < path.size(); i++) {
             double pDistance = distance;
-            double dt = 0.005;
+            double dt = 0.05 / path.get(i).getLinearDistance();
             for(double t = 0; t <= 1; t += dt) {
                 Spline spline = path.get(i);
                 distance += Math.sqrt(Math.pow(spline.getdx(t), 2) + Math.pow(spline.getdy(t), 2)) * dt;
@@ -80,66 +85,71 @@ public class VelocityProfile {
     }
 
     public static double getPathDistance() { return pathDistance; }
-    public static double getPathTime() { return pathTime; }
 
-    public static void calculateVelocities(double distance) {
+    public static void calculateVelocities(double time, double distance) {
         if(approximations.get(splineIndex).getT(distance) >= splineIndex + 1) {
             splineIndex++;
             pT = 1 - pT;
         }
 
-        double t = approximations.get(splineIndex).getT(distance) - (int)approximations.get(splineIndex).getT(distance);
+        double t = approximations.get(splineIndex).getT(distance) % 1;
         Spline currentSpline = path.get(splineIndex);
 
         double dt = t - pT;
+        double dTime = time - pTime;
+
         double dLeftDistance = Math.sqrt((Math.pow((currentSpline.getLeftPosY(t) - currentSpline.getLeftPosY(t + dt)) / (currentSpline.getLeftPosX(t) - currentSpline.getLeftPosX(t + dt)), 2) + 1)) * Math.abs(currentSpline.getLeftPosX(t) - currentSpline.getLeftPosX(t + dt));
         double dRightDistance = Math.sqrt((Math.pow((currentSpline.getRightPosY(t) - currentSpline.getRightPosY(t + dt)) / (currentSpline.getRightPosX(t) - currentSpline.getRightPosX(t + dt)), 2) + 1)) * Math.abs(currentSpline.getRightPosX(t) - currentSpline.getRightPosX(t + dt));
 
         currentLeftDistance += dLeftDistance;
         currentRightDistance += dRightDistance;
+        System.out.println(t);
 
         double leftVelocity;
         double rightVelocity;
         if(currentSpline.getdx(t) > 0 && currentSpline.getd2ydx2(t) > 0 || currentSpline.getdx(t) < 0 && currentSpline.getd2ydx2(t) < 0) {
-            rightVelocity = Math.min(MAX_VELOCITY, calcMaxVelocity(pRightVelocity, dRightDistance));
+            rightVelocity = Math.min(MAX_VELOCITY, calcMaxVelocity(pRightVelocity, dTime));
             leftVelocity = calcInnerWheelVelocity(rightVelocity, currentSpline.getCurvature(t));
-            if(leftVelocity > calcMaxVelocity(pLeftVelocity, dLeftDistance)) {
-                leftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
+            if(leftVelocity > calcMaxVelocity(pLeftVelocity, dTime)) {
+                leftVelocity = calcMaxVelocity(pLeftVelocity, dTime);
                 rightVelocity = calcOuterWheelVelocity(leftVelocity, currentSpline.getCurvature(t));
             }
             decelerating = calcStoppingDistance(rightVelocity) >= rightPathDistance - currentRightDistance;
             if(decelerating) {
-                rightVelocity = calcMinVelocity(pRightVelocity, dRightDistance);
+                rightVelocity = calcMinVelocity(pRightVelocity, dTime);
                 leftVelocity = calcInnerWheelVelocity(rightVelocity, currentSpline.getCurvature(t));
             }
         } else if (currentSpline.getdx(t) < 0 && currentSpline.getd2ydx2(t) > 0 || currentSpline.getdx(t) > 0 && currentSpline.getd2ydx2(t) < 0) {
-            leftVelocity = Math.min(MAX_VELOCITY, calcMaxVelocity(pLeftVelocity, dLeftDistance));
+            leftVelocity = Math.min(MAX_VELOCITY, calcMaxVelocity(pLeftVelocity, dTime));
             rightVelocity = calcInnerWheelVelocity(leftVelocity, currentSpline.getCurvature(t));
-            if(rightVelocity > calcMaxVelocity(pRightVelocity, dRightDistance)) {
-                rightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
+            if(rightVelocity > calcMaxVelocity(pRightVelocity, dTime)) {
+                rightVelocity = calcMaxVelocity(pRightVelocity, dTime);
                 leftVelocity = calcOuterWheelVelocity(rightVelocity, currentSpline.getCurvature(t));
             }
             decelerating = calcStoppingDistance(leftVelocity) >= leftPathDistance - currentLeftDistance;
             if(decelerating) {
-                leftVelocity = calcMinVelocity(pLeftVelocity, dLeftDistance);
+                leftVelocity = calcMinVelocity(pLeftVelocity, dTime);
                 rightVelocity = calcInnerWheelVelocity(leftVelocity, currentSpline.getCurvature(t));
             }
         } else {
-            double maxLeftVelocity = calcMaxVelocity(pLeftVelocity, dLeftDistance);
-            double maxRightVelocity = calcMaxVelocity(pRightVelocity, dRightDistance);
+            double maxLeftVelocity = calcMaxVelocity(pLeftVelocity, dTime);
+            double maxRightVelocity = calcMaxVelocity(pRightVelocity, dTime);
             double currentMaxVelocity = Math.min(maxLeftVelocity, maxRightVelocity);
             leftVelocity = Math.min(currentMaxVelocity, MAX_VELOCITY);
             rightVelocity = Math.min(currentMaxVelocity, MAX_VELOCITY);
             decelerating = calcStoppingDistance(rightVelocity) >= rightPathDistance - currentRightDistance;
             if(decelerating) {
-                leftVelocity = calcMinVelocity(pLeftVelocity, dLeftDistance);
-                rightVelocity = calcMinVelocity(pRightVelocity, dRightDistance);
+                leftVelocity = calcMinVelocity(pLeftVelocity, dTime);
+                rightVelocity = calcMinVelocity(pRightVelocity, dTime);
             }
         }
 
+        dLeftVelocity = leftVelocity - pLeftVelocity;
+        dRightVelocity = rightVelocity - pRightVelocity;
         pLeftVelocity = leftVelocity;
         pRightVelocity = rightVelocity;
         pT = t;
+        pTime = time;
 
         currentLeftVelocity = leftVelocity;
         currentRightVelocity = rightVelocity;
@@ -157,11 +167,11 @@ public class VelocityProfile {
     public static double getCurrentRightVelocity() { return currentRightVelocity; }
     public static double getCurrentAngle() { return currentAngle; }
 
-    private static double calcMaxVelocity(double pVelocity, double distance) {
-        return Math.sqrt(Math.pow(pVelocity, 2) + 2 * MAX_ACCELERATION * distance);
+    private static double calcMaxVelocity(double pVelocity, double time) {
+        return pVelocity + MAX_ACCELERATION * time;
     }
-    private static double calcMinVelocity(double pVelocity, double distance) {
-        return Math.sqrt(Math.pow(pVelocity, 2) + 2 * -MAX_ACCELERATION * distance);
+    private static double calcMinVelocity(double pVelocity, double time) {
+        return pVelocity - MAX_ACCELERATION * time;
     }
     private static double calcInnerWheelVelocity(double outerVelocity, double curvature) {
         double turningRadius = Math.abs(1 / curvature);

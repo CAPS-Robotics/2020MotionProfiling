@@ -44,7 +44,6 @@ public class DataEntry {
         hbox = new HBox();
         hbox.setSpacing(20);
         updateUI();
-
         vbox = new VBox();
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(20);

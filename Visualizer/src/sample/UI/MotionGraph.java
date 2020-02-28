@@ -58,13 +58,12 @@ public class MotionGraph {
         rightData.setName("Right Motor");
         robotData.setName("Actual");
 
-        for(double distance = 0.1; distance < VelocityProfile.getPathDistance(); distance += 0.1) {
-            VelocityProfile.calculateVelocities(distance);
-            if(!Double.isNaN(VelocityProfile.getCurrentLeftVelocity()) && !Double.isNaN(VelocityProfile.getCurrentRightVelocity())) {
-                leftData.getData().add(new XYChart.Data<Number, Number>(distance, VelocityProfile.getCurrentLeftVelocity()));
-                rightData.getData().add(new XYChart.Data<Number, Number>(distance, VelocityProfile.getCurrentRightVelocity()));
-            } else {
-            }
+        double time = 0;
+        for(double distance = 0; distance <= VelocityProfile.getPathDistance(); distance += 0.1) {
+            VelocityProfile.calculateVelocities(time, distance);
+            leftData.getData().add(new XYChart.Data<Number, Number>(time, VelocityProfile.getCurrentLeftVelocity()));
+            rightData.getData().add(new XYChart.Data<Number, Number>(time, VelocityProfile.getCurrentRightVelocity()));
+            time += 0.012;
         }
 
         robotVelocityGraph.getData().clear();
