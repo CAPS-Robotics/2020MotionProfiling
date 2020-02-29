@@ -79,6 +79,7 @@ public class VelocityProfile {
             }
             approximations.add(new LinearApproximation(pDistance, distance, i, i+1));
         }
+
         pathDistance = distance;
         leftPathDistance = leftDistance;
         rightPathDistance = rightDistance;
@@ -98,12 +99,14 @@ public class VelocityProfile {
         double dt = t - pT;
         double dTime = time - pTime;
 
-        double dLeftDistance = Math.sqrt((Math.pow((currentSpline.getLeftPosY(t) - currentSpline.getLeftPosY(t + dt)) / (currentSpline.getLeftPosX(t) - currentSpline.getLeftPosX(t + dt)), 2) + 1)) * Math.abs(currentSpline.getLeftPosX(t) - currentSpline.getLeftPosX(t + dt));
-        double dRightDistance = Math.sqrt((Math.pow((currentSpline.getRightPosY(t) - currentSpline.getRightPosY(t + dt)) / (currentSpline.getRightPosX(t) - currentSpline.getRightPosX(t + dt)), 2) + 1)) * Math.abs(currentSpline.getRightPosX(t) - currentSpline.getRightPosX(t + dt));
+        /*double dLeftDistance = Math.sqrt((Math.pow((currentSpline.getLeftPosY(t) - currentSpline.getLeftPosY(t + dt)) / (currentSpline.getLeftPosX(t) - currentSpline.getLeftPosX(t + dt)), 2) + 1)) * Math.abs(currentSpline.getLeftPosX(t) - currentSpline.getLeftPosX(t + dt));
+        double dRightDistance = Math.sqrt((Math.pow((currentSpline.getRightPosY(t) - currentSpline.getRightPosY(t + dt)) / (currentSpline.getRightPosX(t) - currentSpline.getRightPosX(t + dt)), 2) + 1)) * Math.abs(currentSpline.getRightPosX(t) - currentSpline.getRightPosX(t + dt));*/
+        double dLeftDistance = Math.sqrt((Math.pow((currentSpline.getLeftPosX(t) - currentSpline.getLeftPosX(t + dt)) / dt, 2)) + (Math.pow((currentSpline.getLeftPosY(t) - currentSpline.getLeftPosY(t + dt)) / dt, 2))) * dt;
+        double dRightDistance = Math.sqrt((Math.pow((currentSpline.getRightPosX(t) - currentSpline.getRightPosX(t + dt)) / dt, 2)) + (Math.pow((currentSpline.getRightPosY(t) - currentSpline.getRightPosY(t + dt)) / dt, 2))) * dt;
 
         currentLeftDistance += dLeftDistance;
         currentRightDistance += dRightDistance;
-        System.out.println(t);
+        System.out.println(currentLeftDistance);
 
         double leftVelocity;
         double rightVelocity;
